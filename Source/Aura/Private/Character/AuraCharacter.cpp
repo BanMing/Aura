@@ -12,6 +12,6 @@ AAuraCharacter::AAuraCharacter()
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
 }
