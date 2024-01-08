@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "CoreMinimal.h"
+#include "GameFramework/PlayerState.h"
 #include "UObject/NoExportTypes.h"
 
 #include "AuraWidgetController.generated.h"
 
-class UAbilitySystemComponent;
 class UAttributeSet;
 class UAuraAttributeSet;
 
@@ -46,7 +48,10 @@ class AURA_API UAuraWidgetController : public UObject
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
+
+	virtual void BroadcastInitialValues();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
