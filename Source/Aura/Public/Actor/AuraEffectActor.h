@@ -46,7 +46,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnOverlap(AActor* TargetActor);
 
-
+	
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
 
