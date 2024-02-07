@@ -2,6 +2,7 @@
 
 #include "AbilitySystem/AuraAttributeSet.h"
 
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -22,6 +23,28 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
+void UAuraAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
+{
+	Super::PreAttributeBaseChange(Attribute, NewValue);
+	//if (Attribute == GetHealthAttribute())
+	//{
+	//	float CurrentValue = Health.GetCurrentValue();
+	//	float BaseValue = Health.GetBaseValue();
+	//	int a = 0;
+	//}
+}
+
+void UAuraAttributeSet::PostAttributeBaseChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) const
+{
+	Super::PostAttributeBaseChange(Attribute, OldValue, NewValue);
+	//if (Attribute == GetHealthAttribute())
+	//{
+	//	float CurrentValue = Health.GetCurrentValue();
+	//	float BaseValue = Health.GetBaseValue();
+	//	int a = 0;
+	//}
+}
+
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
@@ -29,12 +52,25 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	// Do some check for attributes to make the value valid
 	if (Attribute == GetHealthAttribute())
 	{
-		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+		float CurrentValue = Health.GetCurrentValue();
+		float BaseValue = Health.GetBaseValue();
+		NewValue =FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
 	if (Attribute == GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
 	}
+}
+
+void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+	//if (Attribute==GetHealthAttribute())
+	//{
+	//	float CurrentValue = Health.GetCurrentValue();
+	//	float BaseValue = Health.GetBaseValue();
+	//	int a = 0;
+	//}
 }
 
 void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -43,6 +79,18 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	// We can get many useful info from Data
 	// Source = causer of the effect, Target = target of the effect (owner of this AS)
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		//float CurrentValue = Health.GetCurrentValue();
+		//float BaseValue = Health.GetBaseValue();
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
