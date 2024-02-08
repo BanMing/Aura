@@ -2,9 +2,10 @@
 
 #pragma once
 
+#include "AbilitySystemInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
-#include "AbilitySystemInterface.h"
+
 #include "AuraPlayerState.generated.h"
 
 /**
@@ -24,11 +25,9 @@ public:
 	UAttributeSet* GetAttributeSet() const;
 
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-
-	
 };

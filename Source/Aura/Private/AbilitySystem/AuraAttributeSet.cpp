@@ -17,6 +17,11 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Resilience, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Vigor, COND_None, REPNOTIFY_Always);
+
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always);
@@ -26,23 +31,23 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 void UAuraAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
 {
 	Super::PreAttributeBaseChange(Attribute, NewValue);
-	//if (Attribute == GetHealthAttribute())
+	// if (Attribute == GetHealthAttribute())
 	//{
 	//	float CurrentValue = Health.GetCurrentValue();
 	//	float BaseValue = Health.GetBaseValue();
 	//	int a = 0;
-	//}
+	// }
 }
 
 void UAuraAttributeSet::PostAttributeBaseChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) const
 {
 	Super::PostAttributeBaseChange(Attribute, OldValue, NewValue);
-	//if (Attribute == GetHealthAttribute())
+	// if (Attribute == GetHealthAttribute())
 	//{
 	//	float CurrentValue = Health.GetCurrentValue();
 	//	float BaseValue = Health.GetBaseValue();
 	//	int a = 0;
-	//}
+	// }
 }
 
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -54,7 +59,7 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	{
 		float CurrentValue = Health.GetCurrentValue();
 		float BaseValue = Health.GetBaseValue();
-		NewValue =FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
 	if (Attribute == GetManaAttribute())
 	{
@@ -65,12 +70,12 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
-	//if (Attribute==GetHealthAttribute())
+	// if (Attribute==GetHealthAttribute())
 	//{
 	//	float CurrentValue = Health.GetCurrentValue();
 	//	float BaseValue = Health.GetBaseValue();
 	//	int a = 0;
-	//}
+	// }
 }
 
 void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -82,8 +87,8 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		//float CurrentValue = Health.GetCurrentValue();
-		//float BaseValue = Health.GetBaseValue();
+		// float CurrentValue = Health.GetCurrentValue();
+		// float BaseValue = Health.GetBaseValue();
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 	}
 
@@ -93,6 +98,28 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 }
 
+#pragma region Primary Attributes Replication Methods
+void UAuraAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Strength, OldStrength);
+}
+
+void UAuraAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Intelligence, OldIntelligence);
+}
+
+void UAuraAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResilience)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Resilience, OldResilience);
+}
+void UAuraAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Vigor, OldVigor);
+}
+#pragma endregion
+
+#pragma region Vital Attributes Replication Methods
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Health, OldHealth);
@@ -112,3 +139,4 @@ void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxMana, OldMaxMana);
 }
+#pragma endregion
