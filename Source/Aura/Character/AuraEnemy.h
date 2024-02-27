@@ -23,6 +23,17 @@ private:
 
 public:
 	AAuraEnemy();
+
+	/** Enemy Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	/** end Enemy Interface */
+
+	/** Combat Interface*/
+	virtual int32 GetPlayerLevel() const override;
+	/** end Combat Interface*/
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	int32 Level = 1;
 };

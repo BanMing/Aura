@@ -39,6 +39,6 @@ private:
 	TObjectPtr<UInputAction> MoveAction;
 
 private:
-	TObjectPtr<IEnemyInterface> LastActor;
-	TObjectPtr<IEnemyInterface> ThisActor;
+	IEnemyInterface* LastActor;
+	IEnemyInterface* ThisActor;
 };
