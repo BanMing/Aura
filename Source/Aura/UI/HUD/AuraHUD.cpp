@@ -30,3 +30,35 @@ void AAuraHUD::InitOverlay(APlayerController* PlayerController, APlayerState* Pl
 
 	OverlayWidget->AddToViewport();
 }
+
+UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuController(const FWidgetControllerParams& WCParams)
+{
+	if (AttributeMenuController == nullptr)
+	{
+		AttributeMenuController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuController->SetWidgetControllerParams(WCParams);
+		AttributeMenuController->BindCallbacksToDependencies();
+	}
+
+	return AttributeMenuController;
+}
+
+UUserWidget* AAuraHUD::InitAttributeMenu(APlayerController* PlayerController, APlayerState* PlayerState, UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet)
+{
+	checkf(AttributeWigetClass, TEXT("Attribute Menu Widget Class uninitialized, please fill out BP_AuraHUD"));
+	checkf(AttributeMenuWidgetControllerClass, TEXT("Attribute Menu Widget Controller Class uninitialized, please fill out BP_AuraHUD"));
+
+	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), AttributeWigetClass);
+	UAuraUserWidget* AttributeMenuWidget = Cast<UAuraUserWidget>(Widget);
+
+	const FWidgetControllerParams WCParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
+	UAttributeMenuWidgetController* Controller = GetAttributeMenuController(WCParams);
+
+	AttributeMenuWidget->SetWidgetController(Controller);
+
+	Controller->BroadcastInitialValues();
+	
+	AttributeMenuWidget->AddToViewport();
+
+	return Widget;
+}
