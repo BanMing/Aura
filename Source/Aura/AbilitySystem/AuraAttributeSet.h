@@ -14,11 +14,14 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)               \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+// typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributteFunctionPtr;
+template <class T>
+using FStaticFunctionPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  *
  */
-UCLASS()
-class AURA_API UAuraAttributeSet : public UAttributeSet
+UCLASS() class AURA_API UAuraAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 
@@ -31,6 +34,9 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+	TMap<FGameplayTag, FStaticFunctionPtr<FGameplayAttribute()>> TagsToAttributes;
+	// TMap<FGameplayTag, FGameplayAttribute (*)()> TagsToAttributes;
 
 public:
 #pragma region Primary Attributes
