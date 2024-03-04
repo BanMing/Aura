@@ -16,10 +16,10 @@ UOverlayAuraWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidget
 
 void AAuraHUD::InitOverlay(APlayerController* PlayerController, APlayerState* PlayerState, UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet)
 {
-	checkf(OverlayWigetClass, TEXT("Overlay Widget Class uninitialized, please fill out BP_AuraHUD"));
+	checkf(OverlayWidgetClass, TEXT("Overlay Widget Class uninitialized, please fill out BP_AuraHUD"));
 	checkf(OverlayAuraWidgetControllerClass, TEXT("Overlay Widget Controller Class uninitialized, please fill out BP_AuraHUD"));
 
-	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), OverlayWigetClass);
+	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), OverlayWidgetClass);
 	OverlayWidget = Cast<UAuraUserWidget>(Widget);
 
 	const FWidgetControllerParams WCParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
@@ -41,24 +41,4 @@ UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuController(const FWidg
 	}
 
 	return AttributeMenuController;
-}
-
-UUserWidget* AAuraHUD::InitAttributeMenu(APlayerController* PlayerController, APlayerState* PlayerState, UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet)
-{
-	checkf(AttributeWigetClass, TEXT("Attribute Menu Widget Class uninitialized, please fill out BP_AuraHUD"));
-	checkf(AttributeMenuWidgetControllerClass, TEXT("Attribute Menu Widget Controller Class uninitialized, please fill out BP_AuraHUD"));
-
-	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), AttributeWigetClass);
-	UAuraUserWidget* AttributeMenuWidget = Cast<UAuraUserWidget>(Widget);
-
-	const FWidgetControllerParams WCParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
-	UAttributeMenuWidgetController* Controller = GetAttributeMenuController(WCParams);
-
-	AttributeMenuWidget->SetWidgetController(Controller);
-
-	Controller->BroadcastInitialValues();
-	
-	AttributeMenuWidget->AddToViewport();
-
-	return Widget;
 }

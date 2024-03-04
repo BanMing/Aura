@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
 #include "Aura/UI/WidgetController/AttributeMenuWidgetController.h"
+#include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
@@ -18,9 +18,9 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WigetController")
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
 	static UOverlayAuraWidgetController* GetOverlayAuraWidgetController(const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WigetController")
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
 	static UAttributeMenuWidgetController* GetAttributeMenuController(const UObject* WorldContextObject);
 };
