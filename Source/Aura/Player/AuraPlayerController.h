@@ -8,6 +8,7 @@
 
 #include "AuraPlayerController.generated.h"
 
+class USplineComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -37,6 +38,7 @@ private:
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	UAuraAbilitySystemComponent* GetASC();
+	void AutoRun();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
@@ -52,6 +54,21 @@ private:
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 
 private:
+	FHitResult CursorHit;
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
+
+private:
+	// Click to move
+	FVector CacheDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.5f;
+	bool bAutoRunning = false;
+	bool bTargeting = false;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
 };
