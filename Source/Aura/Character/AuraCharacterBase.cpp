@@ -25,6 +25,12 @@ UAttributeSet* AAuraCharacterBase::GetAttributeSet() const
 	return AttributeSet;
 }
 
+FVector AAuraCharacterBase::GetCombatSocketLocation()
+{
+	check(Weapon);
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
