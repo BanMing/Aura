@@ -59,6 +59,11 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	AutoRun();
 }
 
+const FHitResult& AAuraPlayerController::GetCursorHit() const
+{
+	return CursorHit;
+}
+
 void AAuraPlayerController::AutoRun()
 {
 	if (!bAutoRunning)
