@@ -113,6 +113,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		// float CurrentValue = Health.GetCurrentValue();
 		// float BaseValue = Health.GetBaseValue();
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		UE_LOG(LogTemp, Warning, TEXT("Changed Health %f"),GetHealth());
 	}
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())

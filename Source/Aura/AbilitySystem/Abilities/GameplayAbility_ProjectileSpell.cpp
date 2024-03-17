@@ -2,7 +2,9 @@
 
 #include "GameplayAbility_ProjectileSpell.h"
 
+#include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
+#include "GameplayEffectTypes.h"
 #include "Interaction/CombatInterface.h"
 
 void UGameplayAbility_ProjectileSpell::ActivateAbility(
@@ -11,7 +13,7 @@ void UGameplayAbility_ProjectileSpell::ActivateAbility(
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UGameplayAbility_ProjectileSpell::SpawnProjetile()
+void UGameplayAbility_ProjectileSpell::SpawnProjetile(const FVector& ProjectileTargetLocation)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
@@ -23,15 +25,19 @@ void UGameplayAbility_ProjectileSpell::SpawnProjetile()
 	if (CombatInterface != nullptr)
 	{
 		const FVector CombatSocketLocation = CombatInterface->GetCombatSocketLocation();
+		FRotator Rotation = (ProjectileTargetLocation - CombatSocketLocation).Rotation();
+		Rotation.Pitch = 0.f;
 
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(CombatSocketLocation);
-		// TODO: Set the projectile rotation
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 
 		AAuraProjectile* Projectile =
 			GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, GetOwningActorFromActorInfo(), Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-		// TODO: Get projectile a Gameplay Effect Spec for causing damage.
+		UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+		Projectile->DamageEffectSpecHandle = ASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), ASC->MakeEffectContext());
+
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

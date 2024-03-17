@@ -7,7 +7,7 @@
 
 #include "AbilityTask_TargetDataUnderMouse.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMouseTargetDataSignature, const FVector&, Data);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMouseTargetDataSignature, const FGameplayAbilityTargetDataHandle&, DataHandle);
 
 /**
  *
@@ -21,8 +21,12 @@ public:
 	static UAbilityTask_TargetDataUnderMouse* CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility);
 
 	UPROPERTY(BlueprintAssignable)
-	FMouseTargetDataSignature ValidDateEvent;
+	FMouseTargetDataSignature ValidDataEvent;
 
 protected:
 	virtual void Activate() override;
+	void SendMouseCursorData();
+	
+	UFUNCTION()
+	void OnTargetDataReplicateCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivateTag);
 };

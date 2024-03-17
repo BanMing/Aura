@@ -32,15 +32,28 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
-	void Move(const FInputActionValue& InputActionValue);
+	void ShiftPressed()
+	{
+		bShiftKeyDown = true;
+	}
+	void ShiftReleased()
+	{
+		bShiftKeyDown = false;
+	}
+	
+	
 	void CursorTrace();
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
-	UAuraAbilitySystemComponent* GetASC();
-	void AutoRun();
 
+	void Move(const FInputActionValue& InputActionValue);
+	void AutoRun();
+	void MoveClickedMove();
+	void MouseHeldMove();
+
+	UAuraAbilitySystemComponent* GetASC();
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
@@ -48,11 +61,20 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<class UAuraInputConfig> InputConfig;
 
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
 
 private:
 	FHitResult CursorHit;
@@ -67,9 +89,5 @@ private:
 	bool bAutoRunning = false;
 	bool bTargeting = false;
 
-	UPROPERTY(EditDefaultsOnly)
-	float AutoRunAcceptanceRadius = 50.f;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USplineComponent> Spline;
+	bool bShiftKeyDown = false;
 };
