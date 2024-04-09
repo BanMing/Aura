@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Aura/Character/AuraCharacterBase.h"
 #include "Aura/Interaction/EnemyInterface.h"
 #include "CoreMinimal.h"
@@ -44,6 +45,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Elementalist;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UWidgetComponent> HealthBar;

@@ -5,10 +5,10 @@
 #include "Aura/UI/WidgetController/AttributeMenuWidgetController.h"
 #include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
 #include "CoreMinimal.h"
+#include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "AuraAbilitySystemLibrary.generated.h"
-
 /**
  *
  */
@@ -23,4 +23,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
 	static UAttributeMenuWidgetController* GetAttributeMenuController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|WidgetController")
+	static void InitDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);
 };

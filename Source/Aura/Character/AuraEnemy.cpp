@@ -2,6 +2,7 @@
 
 #include "Aura/Character/AuraEnemy.h"
 
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h "
 #include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
@@ -31,10 +32,10 @@ void AAuraEnemy::BeginPlay()
 void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	UAuraAbilitySystemComponent* ACS = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	ACS->AbilityActorInfoSet();
+	UAuraAbilitySystemComponent* ASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	ASC->AbilityActorInfoSet();
 
-	Super::InitAbilityActorInfo();
+	//Super::InitAbilityActorInfo();
 
 	if (UAuraUserWidget* Widget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
@@ -49,6 +50,8 @@ void AAuraEnemy::InitAbilityActorInfo()
 		OnHealthChanged.Broadcast(AuraAttributeSet->GetHealth());
 		OnMaxHealthChanged.Broadcast(AuraAttributeSet->GetMaxHealth());
 	}
+
+	UAuraAbilitySystemLibrary::InitDefaultAttributes(this, CharacterClass, Level, ASC);
 }
 
 void AAuraEnemy::HighlightActor()
