@@ -2,8 +2,10 @@
 
 #include "GameplayAbility_ProjectileSpell.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
+#include "AuraGameplayTags.h"
 #include "GameplayEffectTypes.h"
 #include "Interaction/CombatInterface.h"
 
@@ -36,7 +38,11 @@ void UGameplayAbility_ProjectileSpell::SpawnProjetile(const FVector& ProjectileT
 			GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, GetOwningActorFromActorInfo(), Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 		UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-		Projectile->DamageEffectSpecHandle = ASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), ASC->MakeEffectContext());
+		const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), ASC->MakeEffectContext());
+		FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+		const float DamageVal = Damage.GetValueAtLevel(GetAbilityLevel());
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, DamageVal);
+		Projectile->DamageEffectSpecHandle = SpecHandle;
 
 		Projectile->FinishSpawning(SpawnTransform);
 	}

@@ -113,12 +113,22 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		// float CurrentValue = Health.GetCurrentValue();
 		// float BaseValue = Health.GetBaseValue();
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
-		UE_LOG(LogTemp, Warning, TEXT("Changed Health %f"),GetHealth());
 	}
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetInComingDamgeAttribute())
+	{
+		const float LocalIncomingDamge = GetInComingDamge();
+		SetInComingDamge(0.f);
+		if (LocalIncomingDamge > 0.f)
+		{
+			const float NewHealth = GetHealth() - LocalIncomingDamge;
+			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+		}
 	}
 }
 

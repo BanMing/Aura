@@ -109,6 +109,12 @@ public:
 	ATTRIBUTE_ACCESSORS(ThisClass, Mana);
 #pragma endregion
 
+#pragma region Meta Attributes
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData InComingDamge;
+	ATTRIBUTE_ACCESSORS(ThisClass, InComingDamge);
+#pragma endregion
+
 public:
 #pragma region Primary Attributes Replication Methods
 	UFUNCTION()
