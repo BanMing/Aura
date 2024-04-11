@@ -35,6 +35,8 @@ protected:
 private:
 	virtual void InitAbilityActorInfo() override;
 
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangeSignature OnHealthChanged;
@@ -51,4 +53,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UWidgetComponent> HealthBar;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Cambat")
+	bool bHitReacting;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Cambat")
+	float BaseWalkSpeed = 250.f;
 };

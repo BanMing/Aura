@@ -128,6 +128,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		{
 			const float NewHealth = GetHealth() - LocalIncomingDamge;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+			const bool bFatal = NewHealth < 0.f;
+			if (!bFatal)
+			{
+				FGameplayTagContainer GameplayTagContainer;
+				GameplayTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				Data.Target.TryActivateAbilitiesByTag(GameplayTagContainer);
+			}
 		}
 	}
 }
