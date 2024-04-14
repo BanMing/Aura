@@ -2,10 +2,14 @@
 
 #include "Aura/AbilitySystem/AuraAttributeSet.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Aura/AuraGameplayTags.h"
+#include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -102,12 +106,47 @@ void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute,
 	// }
 }
 
+void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
+{
+	// Source = causer of the effect, Target = target of the effect (owner of this AS)
+
+	Props.EffectContextHandle = Data.EffectSpec.GetContext();
+	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+
+	if (IsValid(Props.SourceASC) && Props.SourceASC->AbilityActorInfo.IsValid() && Props.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
+	{
+		Props.SourceAvatarActor = Props.SourceASC->AbilityActorInfo->AvatarActor.Get();
+		Props.SourceController = Props.SourceASC->AbilityActorInfo->PlayerController.Get();
+		if (Props.SourceController == nullptr && Props.SourceAvatarActor != nullptr)
+		{
+			if (const APawn* Pawn = Cast<APawn>(Props.SourceAvatarActor))
+			{
+				Props.SourceController = Pawn->GetController();
+			}
+		}
+		if (Props.SourceController)
+		{
+			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+		}
+	}
+
+	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
+	{
+		Props.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+		Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+		Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
+		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
+	}
+}
+
 void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
 
 	// We can get many useful info from Data
 	// Source = causer of the effect, Target = target of the effect (owner of this AS)
+	FEffectProperties Props;
+	SetEffectProperties(Data, Props);
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
@@ -142,6 +181,18 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				GameplayTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
 				Data.Target.TryActivateAbilitiesByTag(GameplayTagContainer);
 			}
+
+			ShowFloatingText(Props, LocalIncomingDamge);
+		}
+	}
+}
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(this, 0)))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
 	}
 }

@@ -27,6 +27,9 @@ public:
 	void PlayerTick(float DeltaTime) override;
 	const FHitResult& GetCursorHit() const;
 
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(float DamgaAmount,ACharacter* TargetCharacter);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -40,8 +43,7 @@ private:
 	{
 		bShiftKeyDown = false;
 	}
-	
-	
+
 	void CursorTrace();
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
@@ -54,6 +56,7 @@ private:
 	void MouseHeldMove();
 
 	UAuraAbilitySystemComponent* GetASC();
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
@@ -75,6 +78,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UDamageTextComponent> DamageTextComponentClass;
 
 private:
 	FHitResult CursorHit;

@@ -14,6 +14,46 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)               \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+class AController;
+class ACharacter;
+class UAbilitySystemComponent;
+
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties()
+	{
+	}
+
+	FGameplayEffectContextHandle EffectContextHandle;
+
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* SourceController = nullptr;
+
+	UPROPERTY()
+	ACharacter* SourceCharacter = nullptr;
+
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* TargetController = nullptr;
+
+	UPROPERTY()
+	ACharacter* TargetCharacter = nullptr;
+};
+
 // typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributteFunctionPtr;
 template <class T>
 using FStaticFunctionPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
@@ -37,6 +77,9 @@ public:
 
 	TMap<FGameplayTag, FStaticFunctionPtr<FGameplayAttribute()>> TagsToAttributes;
 	// TMap<FGameplayTag, FGameplayAttribute (*)()> TagsToAttributes;
+private:
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+	void ShowFloatingText(const FEffectProperties& Props, float Damage) const;
 
 public:
 #pragma region Primary Attributes

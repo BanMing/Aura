@@ -10,8 +10,10 @@
 #include "Components/SplineComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/Character.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
+#include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -66,7 +68,17 @@ const FHitResult& AAuraPlayerController::GetCursorHit() const
 	return CursorHit;
 }
 
-
+void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+{
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		DamageText->SetDamageText(DamageAmount);
+	}
+}
 
 void AAuraPlayerController::CursorTrace()
 {
