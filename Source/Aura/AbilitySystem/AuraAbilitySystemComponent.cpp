@@ -14,7 +14,7 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 {
 	for (TSubclassOf<UGameplayAbility> Ability : Abilities)
 	{
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, 1);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, 10);
 		if (const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);

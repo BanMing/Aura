@@ -29,6 +29,9 @@ public:
 	/** Combat Interface*/
 	virtual int32 GetPlayerLevel() const override;
 	/** end Combat Interface*/
+
+	virtual void Die() override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -54,9 +57,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UWidgetComponent> HealthBar;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Cambat")
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	bool bHitReacting;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Cambat")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 250.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	float Lifespan = 5.f;
 };
