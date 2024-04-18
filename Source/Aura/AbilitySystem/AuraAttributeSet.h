@@ -14,6 +14,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)               \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+const float kMaxAttributeAmount = 100.f;
+
 class AController;
 class ACharacter;
 class UAbilitySystemComponent;
