@@ -46,13 +46,12 @@ UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuContr
 
 void UAuraAbilitySystemLibrary::InitDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC)
 {
-	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
-	if (AuraGameMode == nullptr)
+	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (CharacterClassInfo == nullptr)
 	{
 		return;
 	}
-
-	FCharacterClassDefaultInfo ClassDefaultInfo = AuraGameMode->CharacterClassInfo->GetCharacterCalssInfo(CharacterClass);
+	FCharacterClassDefaultInfo ClassDefaultInfo = CharacterClassInfo->GetCharacterCalssInfo(CharacterClass);
 
 	FGameplayEffectContextHandle EffectComtextHandle = ASC->MakeEffectContext();
 	EffectComtextHandle.AddSourceObject(ASC->GetAvatarActor());
@@ -60,25 +59,32 @@ void UAuraAbilitySystemLibrary::InitDefaultAttributes(const UObject* WorldContex
 	const FGameplayEffectSpecHandle PrimarySpecHandle = ASC->MakeOutgoingSpec(ClassDefaultInfo.PrimaryAttribute, Level, EffectComtextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*PrimarySpecHandle.Data.Get());
 
-	const FGameplayEffectSpecHandle SecondarySpecHandle = ASC->MakeOutgoingSpec(AuraGameMode->CharacterClassInfo->SecondaryAttribute, Level, EffectComtextHandle);
+	const FGameplayEffectSpecHandle SecondarySpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->SecondaryAttribute, Level, EffectComtextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*SecondarySpecHandle.Data.Get());
 
-	const FGameplayEffectSpecHandle VitalSpecHandle = ASC->MakeOutgoingSpec(AuraGameMode->CharacterClassInfo->VitalAttribute, Level, EffectComtextHandle);
+	const FGameplayEffectSpecHandle VitalSpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->VitalAttribute, Level, EffectComtextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalSpecHandle.Data.Get());
 }
 
 void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
 {
+	if (UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject))
+	{
+		for (TSubclassOf<UGameplayAbility> Ability : CharacterClassInfo->CommonAbilities)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, 1);
+			ASC->GiveAbility(AbilitySpec);
+		}
+	}
+}
+
+UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
+{
 	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (AuraGameMode == nullptr)
 	{
-		return;
+		return nullptr;
 	}
 
-	UCharacterClassInfo* CharacterClassInfo = AuraGameMode->CharacterClassInfo;
-	for (TSubclassOf<UGameplayAbility> Ability : CharacterClassInfo->CommonAbilities)
-	{
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, 1);
-		ASC->GiveAbility(AbilitySpec);
-	}
+	return AuraGameMode->CharacterClassInfo;
 }
