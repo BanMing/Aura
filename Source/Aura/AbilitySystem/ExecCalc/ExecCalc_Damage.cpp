@@ -3,6 +3,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "AbilitySystem/AuraAbilityTypes.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
@@ -63,6 +64,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParameters.SourceTags = SourceTags;
 	EvaluateParameters.TargetTags = TargetTags;
 
+	FGameplayEffectContextHandle GameplayEffectContextHandle = Spec.GetContext();
+	FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(GameplayEffectContextHandle.Get());
+
 	// Get Damage Set by Caller Magnitude
 	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
 
@@ -73,6 +77,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bBlocked = FMath::RandRange(1, 100) < BlockChance;
 	// If Block, halve the damage.
 	Damage = bBlocked ? Damage / 2 : Damage;
+
+	AuraContext->SetIsBlockedHit(bBlocked);
 
 	float SourceArmorPenetration = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluateParameters, SourceArmorPenetration);
@@ -101,7 +107,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	float TargetCriticalHitResistance = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef, EvaluateParameters, TargetCriticalHitResistance);
 	TargetCriticalHitResistance = FMath::Max<float>(TargetCriticalHitResistance, 0.f);
-	
+
 	// Critical Hit Resistance reduces Critical Hit Chance by a certain percentage
 	FRealCurve* CriticalHitResistanceCurve = CharacterClassInfo->DamageCalcCoefficients->FindCurve("CriticalHitResistance", FString());
 	const float CriticalHitResistanceCoefficients = EffectiveArmorCurve->Eval(TargetCombatInterface->GetPlayerLevel());
@@ -112,9 +118,10 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		float SourceCriticalHitDamage = 0.f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef, EvaluateParameters, SourceCriticalHitDamage);
 		SourceCriticalHitDamage = FMath::Max<float>(SourceCriticalHitDamage, 0.f);
-		// Double damage puls a bonus if critical hit
+		// Double damage plus a bonus if critical hit
 		Damage = Damage * 2.f + SourceCriticalHitDamage;
 	}
+	AuraContext->SetIsCriticalHit(bIsCriticalHit);
 
 	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetInComingDamgeAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
