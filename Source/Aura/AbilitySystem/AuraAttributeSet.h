@@ -81,7 +81,7 @@ public:
 	// TMap<FGameplayTag, FGameplayAttribute (*)()> TagsToAttributes;
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
-	void ShowFloatingText(const FEffectProperties& Props, float Damage) const;
+	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsBlockedHit, bool bIsCriticalHit) const;
 
 public:
 #pragma region Primary Attributes

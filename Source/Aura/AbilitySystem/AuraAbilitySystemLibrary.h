@@ -32,4 +32,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|WidgetController")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
+	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
+	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|WidgetController")
+	static void SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bIsBlockedHit);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|WidgetController")
+	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bIsCriticalHit);
 };

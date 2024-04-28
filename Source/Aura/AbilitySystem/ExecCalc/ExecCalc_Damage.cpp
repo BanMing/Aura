@@ -65,7 +65,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParameters.TargetTags = TargetTags;
 
 	FGameplayEffectContextHandle GameplayEffectContextHandle = Spec.GetContext();
-	FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(GameplayEffectContextHandle.Get());
 
 	// Get Damage Set by Caller Magnitude
 	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
@@ -78,7 +77,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	// If Block, halve the damage.
 	Damage = bBlocked ? Damage / 2 : Damage;
 
-	AuraContext->SetIsBlockedHit(bBlocked);
+	UAuraAbilitySystemLibrary::SetIsCriticalHit(GameplayEffectContextHandle, bBlocked);
 
 	float SourceArmorPenetration = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluateParameters, SourceArmorPenetration);
@@ -121,7 +120,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		// Double damage plus a bonus if critical hit
 		Damage = Damage * 2.f + SourceCriticalHitDamage;
 	}
-	AuraContext->SetIsCriticalHit(bIsCriticalHit);
+	UAuraAbilitySystemLibrary::SetIsCriticalHit(GameplayEffectContextHandle, bIsCriticalHit);
 
 	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetInComingDamgeAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
