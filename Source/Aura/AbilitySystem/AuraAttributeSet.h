@@ -160,6 +160,25 @@ public:
 	ATTRIBUTE_ACCESSORS(ThisClass, InComingDamge);
 #pragma endregion
 
+#pragma region Resistance Attributes
+
+	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	FGameplayAttributeData ResistanceFire;
+	ATTRIBUTE_ACCESSORS(ThisClass, ResistanceFire);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	FGameplayAttributeData ResistanceLightning;
+	ATTRIBUTE_ACCESSORS(ThisClass, ResistanceLightning);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	FGameplayAttributeData ResistanceArcane;
+	ATTRIBUTE_ACCESSORS(ThisClass, ResistanceArcane);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	FGameplayAttributeData ResistancePhysical;
+	ATTRIBUTE_ACCESSORS(ThisClass, ResistancePhysical);
+#pragma endregion
+
 public:
 #pragma region Primary Attributes Replication Methods
 	UFUNCTION()
@@ -212,5 +231,19 @@ public:
 	void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldHealth);
+#pragma endregion
+
+#pragma region Resistance Attributes
+	UFUNCTION()
+	void OnRep_ResistanceFire(const FGameplayAttributeData& OldResistanceFire);
+
+	UFUNCTION()
+	void OnRep_ResistanceLightning(const FGameplayAttributeData& OldResistanceLightning);
+
+	UFUNCTION()
+	void OnRep_ResistanceArcane(const FGameplayAttributeData& OldResistanceArcane);
+
+	UFUNCTION()
+	void OnRep_ResistancePhysical(const FGameplayAttributeData& OldResistancePhysical);
 #pragma endregion
 };
