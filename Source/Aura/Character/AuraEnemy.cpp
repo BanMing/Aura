@@ -3,10 +3,13 @@
 #include "Aura/Character/AuraEnemy.h"
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AI/AuraAIController.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h "
 #include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 #include "AuraGameplayTags.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
@@ -89,6 +92,20 @@ void AAuraEnemy::UnHighlightActor()
 int32 AAuraEnemy::GetPlayerLevel() const
 {
 	return Level;
+}
+
+void AAuraEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// only server owns controlller
+	if (!HasAuthority())
+	{
+		return;
+	}
+	AIController = Cast<AAuraAIController>(NewController);
+	AIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	AIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AAuraEnemy::Die()

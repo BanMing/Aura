@@ -10,6 +10,8 @@
 
 #include "AuraEnemy.generated.h"
 
+class UBehaviorTree;
+class AAuraAIController;
 /**
  *
  */
@@ -29,6 +31,8 @@ public:
 	/** Combat Interface*/
 	virtual int32 GetPlayerLevel() const override;
 	/** end Combat Interface*/
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void Die() override;
 
@@ -65,4 +69,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	float Lifespan = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY(BlueprintReadOnly, Category = "AI")
+	TObjectPtr<AAuraAIController> AIController;
 };
