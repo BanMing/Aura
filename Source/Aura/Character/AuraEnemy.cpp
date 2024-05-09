@@ -115,7 +115,7 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AIController->RunBehaviorTree(BehaviorTree);
 
 	AIController->GetBlackboardComponent()->SetValueAsBool("HitReacting", false);
-	AIController->GetBlackboardComponent()->SetValueAsBool("RanageAttacker", CharacterClass == ECharacterClass::Warrior);
+	AIController->GetBlackboardComponent()->SetValueAsBool("RangeAttacker", CharacterClass == ECharacterClass::Warrior);
 }
 
 void AAuraEnemy::Die()
