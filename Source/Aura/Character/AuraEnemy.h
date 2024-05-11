@@ -26,6 +26,8 @@ public:
 	/** Enemy Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	virtual AActor* GetCombatTarget_Implementation() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	/** end Enemy Interface */
 
 	/** Combat Interface*/
@@ -69,6 +71,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	float Lifespan = 5.f;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;

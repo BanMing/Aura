@@ -41,7 +41,7 @@ void AAuraEnemy::BeginPlay()
 	InitAbilityActorInfo();
 	if (HasAuthority())
 	{
-		UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+		UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	}
 }
 
@@ -96,6 +96,16 @@ void AAuraEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
+AActor* AAuraEnemy::GetCombatTarget_Implementation()
+{
+	return CombatTarget;
+}
+
+void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
 int32 AAuraEnemy::GetPlayerLevel() const
 {
 	return Level;
@@ -115,7 +125,7 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AIController->RunBehaviorTree(BehaviorTree);
 
 	AIController->GetBlackboardComponent()->SetValueAsBool("HitReacting", false);
-	AIController->GetBlackboardComponent()->SetValueAsBool("RangeAttacker", CharacterClass == ECharacterClass::Warrior);
+	AIController->GetBlackboardComponent()->SetValueAsBool("RangeAttacker", CharacterClass != ECharacterClass::Warrior);
 }
 
 void AAuraEnemy::Die()

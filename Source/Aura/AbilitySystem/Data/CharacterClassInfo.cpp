@@ -2,7 +2,7 @@
 
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 
-FCharacterClassDefaultInfo UCharacterClassInfo::GetCharacterCalssInfo(ECharacterClass CharacterClass) const
+const FCharacterClassDefaultInfo& UCharacterClassInfo::GetClassDefaultInfo(ECharacterClass CharacterClass) const
 {
 	return CharacterClassInfoMap[CharacterClass];
 }

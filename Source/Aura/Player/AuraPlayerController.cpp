@@ -230,11 +230,14 @@ void AAuraPlayerController::MoveClickedMove()
 			for (const FVector& PointLoc : NavPath->PathPoints)
 			{
 				Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-
 				// DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
+			}
+
+			if (NavPath->PathPoints.Num() > 0)
+			{
+				CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				bAutoRunning = true;
 			}
-			CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 		}
 	}
 	bTargeting = false;
