@@ -55,9 +55,14 @@ bool AAuraCharacterBase::IsDead_Implementation() const
 	return bDead;
 }
 
-AActor* AAuraCharacterBase::GetAvator_Implementation()
+AActor* AAuraCharacterBase::GetAvatar_Implementation()
 {
 	return this;
+}
+
+TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
+{
+	return AttackMontages;
 }
 
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()

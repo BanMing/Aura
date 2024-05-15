@@ -31,4 +31,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetCombatTarget(AActor* InCombatTarget);
+
+	//UPROPERTY(BlueprintReadOnly)
+	TArray<AActor*> TestActors;
 };

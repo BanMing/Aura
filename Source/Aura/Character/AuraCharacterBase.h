@@ -29,7 +29,8 @@ public:
 	virtual UAnimMontage* GetHitReactAnimMontage_Implementation() override;
 	virtual void Die() override;
 	virtual bool IsDead_Implementation() const override;
-	virtual AActor* GetAvator_Implementation() override;
+	virtual AActor* GetAvatar_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
@@ -78,6 +79,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TArray<FTaggedMontage> AttackMontages;
 
 	bool bDead = false;
 

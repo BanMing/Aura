@@ -78,7 +78,10 @@ void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCou
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
-	AIController->GetBlackboardComponent()->SetValueAsBool("HitReacting", bHitReacting);
+	if (AIController && AIController->GetBlackboardComponent())
+	{
+		AIController->GetBlackboardComponent()->SetValueAsBool("HitReacting", bHitReacting);
+	}
 }
 
 void AAuraEnemy::HighlightActor()
