@@ -22,8 +22,8 @@ void UGameplayAbility_ProjectileSpell::SpawnProjetile(const FVector& ProjectileT
 	{
 		return;
 	}
-
-	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
+	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), GameplayTags.Montage_Attack_Weapon);
 	FRotator Rotation = (ProjectileTargetLocation - CombatSocketLocation).Rotation();
 	// Rotation.Pitch = 0.f;
 
@@ -36,7 +36,6 @@ void UGameplayAbility_ProjectileSpell::SpawnProjetile(const FVector& ProjectileT
 
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), ASC->MakeEffectContext());
-	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
 
 	for (auto& Pair : DamageTypes)
 	{

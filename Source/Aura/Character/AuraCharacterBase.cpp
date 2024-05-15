@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Aura.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "Components/CapsuleComponent.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
@@ -33,10 +34,26 @@ UAttributeSet* AAuraCharacterBase::GetAttributeSet() const
 	return AttributeSet;
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& Montage)
 {
 	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
+
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+
+	if (Montage.MatchesTagExact(GameplayTags.Montage_Attack_Weapon))
+	{
+		return Weapon->GetSocketLocation(WeaponTipSocketName);
+	}
+	else if (Montage.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandTipSocketName);
+	}
+	else if (Montage.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandTipSocketName);
+	}
+
+	return FVector::ZeroVector;
 }
 
 UAnimMontage* AAuraCharacterBase::GetHitReactAnimMontage_Implementation()
@@ -60,7 +77,7 @@ AActor* AAuraCharacterBase::GetAvatar_Implementation()
 	return this;
 }
 
-TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
+const TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation() const
 {
 	return AttackMontages;
 }
