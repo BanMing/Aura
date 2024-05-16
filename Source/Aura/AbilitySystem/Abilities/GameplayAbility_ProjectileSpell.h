@@ -21,7 +21,7 @@ public:
 
 protected:
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjetile(const FVector& ProjectileTargetLocation);
+	void SpawnProjectile(const FVector& ProjectileTargetLocation);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
