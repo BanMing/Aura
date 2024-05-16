@@ -4,19 +4,24 @@
 
 #include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 #include "CoreMinimal.h"
+#include "Interaction/CombatInterface.h"
 
-#include "AuraDamageGameplayAbility.generated.h"
+#include "GameplayAbility_DamageBase.generated.h"
 
 /**
  *
  */
 UCLASS()
-class AURA_API UAuraDamageGameplayAbility : public UAuraGameplayAbility
+class AURA_API UGameplayAbility_DamageBase : public UAuraGameplayAbility
 {
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
+
+protected:
+	UFUNCTION(BlueprintPure)
+	const FTaggedMontage GetRandomTaggedMontage() const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

@@ -1,11 +1,11 @@
 // Copyright BanMing
 
-#include "AbilitySystem/Abilities/AuraDamageGameplayAbility.h"
+#include "AbilitySystem/Abilities/GameplayAbility_DamageBase.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 
-void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
+void UGameplayAbility_DamageBase::CauseDamage(AActor* TargetActor)
 {
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, GetAbilityLevel());
 
@@ -16,4 +16,18 @@ void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 	}
 
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+}
+
+const FTaggedMontage UGameplayAbility_DamageBase::GetRandomTaggedMontage() const
+{
+	// if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
+	{
+		const TArray<FTaggedMontage>& TaggedMontages = ICombatInterface::Execute_GetAttackMontages(GetAvatarActorFromActorInfo());
+		if (TaggedMontages.Num() > 0)
+		{
+			const int RandomIndex = FMath::RandRange(0, TaggedMontages.Num() - 1);
+			return TaggedMontages[RandomIndex];
+		}
+	}
+	return FTaggedMontage();
 }
