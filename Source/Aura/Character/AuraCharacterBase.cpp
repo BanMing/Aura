@@ -82,6 +82,11 @@ const TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementatio
 	return AttackMontages;
 }
 
+UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
+{
+	return BloodEffect;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
 	// Set character rogdoll

@@ -25,7 +25,7 @@ public:
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 
-	int32 GetPLayerLevel() const
+	FORCEINLINE int32 GetPLayerLevel() const
 	{
 		return Level;
 	}

@@ -304,6 +304,11 @@ void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 }
 #pragma endregion
 
+void UAuraAttributeSet::OnRep_InComingDamge(const FGameplayAttributeData& OldInComingDamge)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, InComingDamge, OldInComingDamge);
+}
+
 #pragma region Resistance Attributes
 
 void UAuraAttributeSet::OnRep_ResistanceFire(const FGameplayAttributeData& OldResistanceFire)

@@ -34,8 +34,19 @@ void UGameplayAbility_ProjectileSpell::SpawnProjectile(const FVector& Projectile
 	AAuraProjectile* Projectile =
 		GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, GetOwningActorFromActorInfo(), Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
-	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), ASC->MakeEffectContext());
+
+	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
+	//EffectContextHandle.SetAbility(this);
+	//EffectContextHandle.AddSourceObject(Projectile);
+	//TArray<TWeakObjectPtr<AActor>> Actors;
+	//Actors.Add(Projectile);
+	//EffectContextHandle.AddActors(Actors);
+	//FHitResult HitResult;
+	//HitResult.Location = ProjectileTargetLocation;
+	//EffectContextHandle.AddHitResult(HitResult);
+
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 
 	for (auto& Pair : DamageTypes)
 	{

@@ -155,26 +155,26 @@ public:
 #pragma endregion
 
 #pragma region Meta Attributes
-	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	UPROPERTY(BlueprintReadOnly,  Category = "Meta Attributes")
 	FGameplayAttributeData InComingDamge;
 	ATTRIBUTE_ACCESSORS(ThisClass, InComingDamge);
 #pragma endregion
 
 #pragma region Resistance Attributes
 
-	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ResistanceFire, Category = "Resistance Attributes")
 	FGameplayAttributeData ResistanceFire;
 	ATTRIBUTE_ACCESSORS(ThisClass, ResistanceFire);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ResistanceLightning, Category = "Resistance Attributes")
 	FGameplayAttributeData ResistanceLightning;
 	ATTRIBUTE_ACCESSORS(ThisClass, ResistanceLightning);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ResistanceArcane, Category = "Resistance Attributes")
 	FGameplayAttributeData ResistanceArcane;
 	ATTRIBUTE_ACCESSORS(ThisClass, ResistanceArcane);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Resistance Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ResistancePhysical, Category = "Resistance Attributes")
 	FGameplayAttributeData ResistancePhysical;
 	ATTRIBUTE_ACCESSORS(ThisClass, ResistancePhysical);
 #pragma endregion
@@ -232,7 +232,8 @@ public:
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldHealth);
 #pragma endregion
-
+	UFUNCTION()
+	void OnRep_InComingDamge(const FGameplayAttributeData& OldInComingDamge);
 #pragma region Resistance Attributes
 	UFUNCTION()
 	void OnRep_ResistanceFire(const FGameplayAttributeData& OldResistanceFire);

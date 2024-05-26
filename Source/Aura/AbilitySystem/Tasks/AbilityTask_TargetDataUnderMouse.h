@@ -28,5 +28,5 @@ protected:
 	void SendMouseCursorData();
 	
 	UFUNCTION()
-	void OnTargetDataReplicateCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivateTag);
+	void OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivateTag);
 };
