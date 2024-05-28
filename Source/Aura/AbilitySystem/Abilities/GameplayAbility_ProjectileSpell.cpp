@@ -23,7 +23,7 @@ void UGameplayAbility_ProjectileSpell::SpawnProjectile(const FVector& Projectile
 		return;
 	}
 	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), GameplayTags.Montage_Attack_Weapon);
+	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), GameplayTags.CombatSocket_Weapon);
 	FRotator Rotation = (ProjectileTargetLocation - CombatSocketLocation).Rotation();
 	// Rotation.Pitch = 0.f;
 

@@ -8,6 +8,7 @@
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -40,15 +41,15 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
-	if (Montage.MatchesTagExact(GameplayTags.Montage_Attack_Weapon))
+	if (Montage.MatchesTagExact(GameplayTags.CombatSocket_Weapon))
 	{
 		return Weapon->GetSocketLocation(WeaponTipSocketName);
 	}
-	else if (Montage.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	else if (Montage.MatchesTagExact(GameplayTags.CombatSocket_LeftHand))
 	{
 		return GetMesh()->GetSocketLocation(LeftHandTipSocketName);
 	}
-	else if (Montage.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	else if (Montage.MatchesTagExact(GameplayTags.CombatSocket_RightHand))
 	{
 		return GetMesh()->GetSocketLocation(RightHandTipSocketName);
 	}
@@ -87,6 +88,18 @@ UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
 	return BloodEffect;
 }
 
+FTaggedMontage AAuraCharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag& SockectTag) const
+{
+	for (const FTaggedMontage& Item : AttackMontages)
+	{
+		if (Item.CombatSocketTag.MatchesTagExact(SockectTag))
+		{
+			return Item;
+		}
+	}
+	return FTaggedMontage();
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 {
 	// Set character rogdoll
@@ -100,7 +113,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
 	Dissolve();
 	bDead = true;
 }

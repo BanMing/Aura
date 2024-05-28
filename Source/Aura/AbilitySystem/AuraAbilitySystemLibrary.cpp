@@ -166,5 +166,5 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 	const bool bFirstIsEnemy = FirstActor->ActorHasTag("Enemy");
 	const bool bSecondIsEnemy = SecondActor->ActorHasTag("Enemy");
 
-	return bFirstIsPlayer && bSecondIsEnemy || bFirstIsEnemy && bSecondIsPlayer;
+	return !(bFirstIsPlayer && bSecondIsPlayer || bFirstIsEnemy && bSecondIsEnemy);
 }
