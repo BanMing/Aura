@@ -22,6 +22,9 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectile(const FVector& ProjectileTargetLocation);
+	
+	UFUNCTION(BlueprintCallable)
+	void SpawnProjectileByTag(const FVector& ProjectileTargetLocation,const FGameplayTag& SocketTag);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

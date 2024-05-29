@@ -17,13 +17,19 @@ void UGameplayAbility_ProjectileSpell::ActivateAbility(
 
 void UGameplayAbility_ProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
-	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	SpawnProjectileByTag(ProjectileTargetLocation, GameplayTags.CombatSocket_Weapon);
+}
+
+void UGameplayAbility_ProjectileSpell::SpawnProjectileByTag(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag)
+{
+
+		const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
 	{
 		return;
 	}
-	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), GameplayTags.CombatSocket_Weapon);
+	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), SocketTag);
 	FRotator Rotation = (ProjectileTargetLocation - CombatSocketLocation).Rotation();
 	// Rotation.Pitch = 0.f;
 
@@ -34,17 +40,16 @@ void UGameplayAbility_ProjectileSpell::SpawnProjectile(const FVector& Projectile
 	AAuraProjectile* Projectile =
 		GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, GetOwningActorFromActorInfo(), Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-
 	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
-	//EffectContextHandle.SetAbility(this);
-	//EffectContextHandle.AddSourceObject(Projectile);
-	//TArray<TWeakObjectPtr<AActor>> Actors;
-	//Actors.Add(Projectile);
-	//EffectContextHandle.AddActors(Actors);
-	//FHitResult HitResult;
-	//HitResult.Location = ProjectileTargetLocation;
-	//EffectContextHandle.AddHitResult(HitResult);
+	// EffectContextHandle.SetAbility(this);
+	// EffectContextHandle.AddSourceObject(Projectile);
+	// TArray<TWeakObjectPtr<AActor>> Actors;
+	// Actors.Add(Projectile);
+	// EffectContextHandle.AddActors(Actors);
+	// FHitResult HitResult;
+	// HitResult.Location = ProjectileTargetLocation;
+	// EffectContextHandle.AddHitResult(HitResult);
 
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 
