@@ -16,12 +16,19 @@ TArray<FVector> UGameplayAbility_Summon::GetSpawnLocations()
 	{
 		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
 		const FVector ChosenSpawnLocation = Location + Direction * FMath::FRandRange(MinSpawnDistance, MaxSpawnDistance);
-		SpawnLocations.Add(ChosenSpawnLocation);
 
-		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + Direction * MaxSpawnDistance, 4.f, FColor::Green, 3);
-		DrawDebugSphere(GetWorld(), ChosenSpawnLocation, 15.f, 12, FColor::Red, false, 3.f);
-		DrawDebugSphere(GetWorld(), Location + Direction * MinSpawnDistance, 5.f, 12, FColor::Blue, false, 3.f);
-		DrawDebugSphere(GetWorld(), Location + Direction * MaxSpawnDistance, 5.f, 12, FColor::Blue, false, 3.f);
+		// Check the location if is the floor
+		FHitResult Hit;
+		const FVector ZOffsetVec = FVector(0.f, 0.f, 400.f);
+		GetWorld()->LineTraceSingleByChannel(Hit, ChosenSpawnLocation + ZOffsetVec, ChosenSpawnLocation - ZOffsetVec, ECollisionChannel::ECC_WorldStatic);
+		if (Hit.bBlockingHit)
+		{
+			SpawnLocations.Add(Hit.ImpactPoint);
+		}
+		// UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + Direction * MaxSpawnDistance, 4.f, FColor::Green, 3);
+		// DrawDebugSphere(GetWorld(), ChosenSpawnLocation, 15.f, 12, FColor::Red, false, 3.f);
+		// DrawDebugSphere(GetWorld(), Location + Direction * MinSpawnDistance, 5.f, 12, FColor::Blue, false, 3.f);
+		// DrawDebugSphere(GetWorld(), Location + Direction * MaxSpawnDistance, 5.f, 12, FColor::Blue, false, 3.f);
 	}
 
 	// const FVector RightOfSpread = Forward.RotateAngleAxis(SpawnSpread / 2.f, FVector::UpVector);
@@ -36,4 +43,10 @@ TArray<FVector> UGameplayAbility_Summon::GetSpawnLocations()
 	// DrawDebugSphere(GetWorld(), Location + LeftOfSpread * MaxSpawnDistance, 15.f, 12, FColor::Blue, false, 3.f);
 
 	return SpawnLocations;
+}
+
+TSubclassOf<APawn> UGameplayAbility_Summon::GetRandomMinionClass()
+{
+	const int index = FMath::RandRange(0, MinionClasses.Num() - 1);
+	return MinionClasses[index];
 }
