@@ -15,23 +15,25 @@ void UGameplayAbility_ProjectileSpell::ActivateAbility(
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UGameplayAbility_ProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
+void UGameplayAbility_ProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, bool bOverridePitch, float PitchOverride)
 {
 	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-	SpawnProjectileByTag(ProjectileTargetLocation, GameplayTags.CombatSocket_Weapon);
+	SpawnProjectileByTag(ProjectileTargetLocation, GameplayTags.CombatSocket_Weapon, bOverridePitch, PitchOverride);
 }
 
-void UGameplayAbility_ProjectileSpell::SpawnProjectileByTag(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag)
+void UGameplayAbility_ProjectileSpell::SpawnProjectileByTag(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride)
 {
-
-		const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer)
 	{
 		return;
 	}
 	const FVector CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), SocketTag);
 	FRotator Rotation = (ProjectileTargetLocation - CombatSocketLocation).Rotation();
-	// Rotation.Pitch = 0.f;
+	if (bOverridePitch)
+	{
+		Rotation.Pitch = PitchOverride;
+	}
 
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(CombatSocketLocation);

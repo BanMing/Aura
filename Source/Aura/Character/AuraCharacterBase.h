@@ -34,6 +34,8 @@ public:
 	virtual const TArray<FTaggedMontage> GetAttackMontages_Implementation() const override;
 	UNiagaraSystem* GetBloodEffect_Implementation() override;
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& SockectTag) const override;
+	virtual int32 GetMinionCount_Implementation() const;
+	void IncrementMinionCount_Implementation(int Amount = 1);
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
@@ -99,6 +101,8 @@ protected:
 	USoundBase* DeathSound;
 
 	bool bDead = false;
+
+	int32 MinionCount = 0;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")

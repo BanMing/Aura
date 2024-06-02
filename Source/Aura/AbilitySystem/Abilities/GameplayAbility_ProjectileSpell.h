@@ -21,10 +21,10 @@ public:
 
 protected:
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile(const FVector& ProjectileTargetLocation);
-	
+	void SpawnProjectile(const FVector& ProjectileTargetLocation, bool bOverridePitch, float PitchOverride);
+
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectileByTag(const FVector& ProjectileTargetLocation,const FGameplayTag& SocketTag);
+	void SpawnProjectileByTag(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
