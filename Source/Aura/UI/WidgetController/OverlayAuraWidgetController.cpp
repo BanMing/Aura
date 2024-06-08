@@ -1,6 +1,7 @@
 // Copyright BanMing
-
 #include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
+
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayAuraWidgetController::BroadcastInitialValues()
 {
@@ -23,8 +24,9 @@ void UOverlayAuraWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetManaAttribute()).AddLambda([this](const FOnAttributeChangeData& Data) { OnManaChanged.Broadcast(Data.NewValue); });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute()).AddLambda([this](const FOnAttributeChangeData& Data) { OnMaxManaChanged.Broadcast(Data.NewValue); });
 
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)
-		->EffectAssetTags.AddLambda(
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		AuraASC->EffectAssetTags.AddLambda(
 			[this](const FGameplayTagContainer& AssetTags)
 			{
 				for (const FGameplayTag Tag : AssetTags)
@@ -40,4 +42,32 @@ void UOverlayAuraWidgetController::BindCallbacksToDependencies()
 					}
 				}
 			});
+
+		if (AuraASC->bStartupAbilitiesGiven)
+		{
+			OnInitializeStartupAbilities(AuraASC);
+		}
+		else
+		{
+			AuraASC->OnAbilitiesGiven.AddUObject(this, &ThisClass::OnInitializeStartupAbilities);
+		}
+	}
+}
+
+void UOverlayAuraWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemComponent* ASC)
+{
+	if (!ASC->bStartupAbilitiesGiven)
+	{
+		return;
+	}
+
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda(
+		[this](const FGameplayAbilitySpec& AbilitySpec)
+		{
+			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(UAuraAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
+			Info.InputTag = UAuraAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			AbilityInfoDelegate.Broadcast(Info);
+		});
+	ASC->ForEachAbility(BroadcastDelegate);
 }

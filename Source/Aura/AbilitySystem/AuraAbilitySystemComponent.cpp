@@ -3,6 +3,7 @@
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 
 #include "Abilities/AuraGameplayAbility.h"
+#include "AuraLogChannels.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -21,6 +22,9 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 			GiveAbility(AbilitySpec);
 		}
 	}
+	// Only Server call this function
+	bStartupAbilitiesGiven = true;
+	OnAbilitiesGiven.Broadcast(this);
 }
 
 void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
@@ -60,6 +64,62 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 				TryActivateAbility(AbilitySpec.Handle);
 			}
 		}
+	}
+}
+
+void UAuraAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
+{
+	// Used to stop us from removing abilities from an ability system component
+	// while we're iterating through the abilities
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!Delegate.ExecuteIfBound(AbilitySpec))
+		{
+			UE_LOG(LogAura, Error, TEXT("Failed to execute delegate in %hs"), __FUNCTION__);
+		}
+	}
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (AbilitySpec.Ability)
+	{
+		for (const FGameplayTag& Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		{
+			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag("Abilities")))
+			{
+				return Tag;
+			}
+		}
+	}
+	return FGameplayTag();
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (AbilitySpec.Ability)
+	{
+		for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+		{
+			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag("InputTag")))
+			{
+				return Tag;
+			}
+		}
+	}
+	return FGameplayTag();
+}
+
+void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+
+	// Client call this function
+	if (!bStartupAbilitiesGiven)
+	{
+		bStartupAbilitiesGiven = true;
+		OnAbilitiesGiven.Broadcast(this);
 	}
 }
 

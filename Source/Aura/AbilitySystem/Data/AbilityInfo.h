@@ -21,6 +21,9 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
 	TObjectPtr<const UMaterialInterface> BackgroundMaterial = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
+	FGameplayTag InputTag = FGameplayTag();
 };
 
 /**
