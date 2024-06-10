@@ -111,6 +111,21 @@ FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 	return FGameplayTag();
 }
 
+FGameplayTag UAuraAbilitySystemComponent::GetCooldownTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (AbilitySpec.Ability)
+	{
+		for (const FGameplayTag& Tag : *AbilitySpec.Ability->GetCooldownTags())
+		{
+			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag("Cooldown")))
+			{
+				return Tag;
+			}
+		}
+	}
+	return FGameplayTag();
+}
+
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 {
 	Super::OnRep_ActivateAbilities();

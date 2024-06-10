@@ -67,6 +67,7 @@ void UOverlayAuraWidgetController::OnInitializeStartupAbilities(UAuraAbilitySyst
 		{
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(UAuraAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
 			Info.InputTag = UAuraAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			Info.CooldownTag = UAuraAbilitySystemComponent::GetCooldownTagFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		});
 	ASC->ForEachAbility(BroadcastDelegate);

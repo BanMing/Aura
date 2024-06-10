@@ -24,6 +24,9 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
 	FGameplayTag InputTag = FGameplayTag();
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
+	FGameplayTag CooldownTag = FGameplayTag();
 };
 
 /**

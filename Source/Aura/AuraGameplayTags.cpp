@@ -65,6 +65,8 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 	GameplayTags.Abilities_Summon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Summon"), FString("Test Des."));
 	GameplayTags.Abilities_Fire_FireBlot = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Fire.FireBlot"), FString("Test Des."));
 
+	GameplayTags.Cooldown_Fire_FireBlot = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Fire.FireBlot"), FString("Test Des."));
+
 	GameplayTags.CombatSocket_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.Weapon"), FString("Test Des."));
 	GameplayTags.CombatSocket_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.RightHand"), FString("Test Des."));
 	GameplayTags.CombatSocket_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.LeftHand"), FString("Test Des."));
