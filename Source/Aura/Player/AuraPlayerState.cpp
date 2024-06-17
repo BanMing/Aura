@@ -37,9 +37,10 @@ UAttributeSet* AAuraPlayerState::GetAttributeSet() const
 
 void AAuraPlayerState::OnRep_Level(int32 OldLevel)
 {
-
+	OnPlayerLevelChanged.Broadcast(Level);
 }
 
 void AAuraPlayerState::OnRep_XP(int32 OldXP)
 {
+	OnPlayerXPChanged.Broadcast(XP);
 }

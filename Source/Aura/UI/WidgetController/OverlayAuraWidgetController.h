@@ -42,6 +42,15 @@ public:
 
 	virtual void BindCallbacksToDependencies() override;
 
+protected:
+	template <typename T>
+	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+
+	void OnInitializeStartupAbilities(class UAuraAbilitySystemComponent* ASC);
+
+	void OnXPChanged(int32 NewXP) const;
+
+public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangeSignature OnHealthChanged;
 
@@ -60,17 +69,15 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
 	FAbilityInfoSignature AbilityInfoDelegate;
 
+	UPROPERTY(BlueprintAssignable, Category = "Player Stat")
+	FOnAttributeChangeSignature OnPlayerXPPercentChanged;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<class UAbilityInfo> AbilityInfo;
-
-	template <typename T>
-	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
-
-	void OnInitializeStartupAbilities(class UAuraAbilitySystemComponent* ASC);
 };
 
 template <typename T>
