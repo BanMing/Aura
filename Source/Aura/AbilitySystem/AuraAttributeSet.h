@@ -155,9 +155,13 @@ public:
 #pragma endregion
 
 #pragma region Meta Attributes
-	UPROPERTY(BlueprintReadOnly,  Category = "Meta Attributes")
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData InComingDamge;
 	ATTRIBUTE_ACCESSORS(ThisClass, InComingDamge);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData InComingXP;
+	ATTRIBUTE_ACCESSORS(ThisClass, InComingXP);
 #pragma endregion
 
 #pragma region Resistance Attributes
@@ -232,8 +236,13 @@ public:
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldHealth);
 #pragma endregion
+#pragma region Meta Attributes
 	UFUNCTION()
 	void OnRep_InComingDamge(const FGameplayAttributeData& OldInComingDamge);
+
+	UFUNCTION()
+	void OnRep_InComingXP(const FGameplayAttributeData& OldInComingXP);
+#pragma endregion
 #pragma region Resistance Attributes
 	UFUNCTION()
 	void OnRep_ResistanceFire(const FGameplayAttributeData& OldResistanceFire);

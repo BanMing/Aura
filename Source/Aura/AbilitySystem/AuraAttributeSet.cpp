@@ -61,6 +61,9 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always);
 
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, InComingDamge, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, InComingXP, COND_None, REPNOTIFY_Always);
+
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, ResistanceFire, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, ResistanceLightning, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, ResistanceArcane, COND_None, REPNOTIFY_Always);
@@ -196,6 +199,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			ShowFloatingText(Props, LocalIncomingDamge, UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle), UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle));
 		}
 	}
+
+	if (Data.EvaluatedData.Attribute == GetInComingXPAttribute())
+	{
+		const float LocalIncomingXP = GetInComingXP();
+		SetInComingXP(0.f);
+	}
 }
 void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsBlockedHit, bool bIsCriticalHit) const
 {
@@ -304,10 +313,17 @@ void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 }
 #pragma endregion
 
+#pragma region Meta Attributes
 void UAuraAttributeSet::OnRep_InComingDamge(const FGameplayAttributeData& OldInComingDamge)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, InComingDamge, OldInComingDamge);
 }
+
+void UAuraAttributeSet::OnRep_InComingXP(const FGameplayAttributeData& OldInComingXP)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, InComingXP, OldInComingXP);
+}
+#pragma endregion
 
 #pragma region Resistance Attributes
 

@@ -22,6 +22,7 @@ public:
 	FEffectAssetTags EffectAssetTags;
 	FAbilitiesGiven OnAbilitiesGiven;
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities);
+	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities);
 
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);

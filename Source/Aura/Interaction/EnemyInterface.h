@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 
@@ -32,6 +33,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetCombatTarget(AActor* InCombatTarget);
 
-	//UPROPERTY(BlueprintReadOnly)
-	TArray<AActor*> TestActors;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	ECharacterClass GetCharacterClass() const;
 };

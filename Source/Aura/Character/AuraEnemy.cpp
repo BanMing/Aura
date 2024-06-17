@@ -109,6 +109,11 @@ void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
 	CombatTarget = InCombatTarget;
 }
 
+ECharacterClass AAuraEnemy::GetCharacterClass_Implementation() const
+{
+	return CharacterClass;
+}
+
 int32 AAuraEnemy::GetPlayerLevel() const
 {
 	return Level;

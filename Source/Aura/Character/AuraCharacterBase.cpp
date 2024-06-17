@@ -161,6 +161,7 @@ void AAuraCharacterBase::AddCharacterAbilities()
 
 	UAuraAbilitySystemComponent* ASC = Cast<UAuraAbilitySystemComponent>(GetAbilitySystemComponent());
 	ASC->AddCharacterAbilities(StartupAbilities);
+	ASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 
 void AAuraCharacterBase::Dissolve()
