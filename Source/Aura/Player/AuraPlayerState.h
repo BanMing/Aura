@@ -75,6 +75,12 @@ private:
 	UFUNCTION()
 	void OnRep_XP(int32 OldXP);
 
+	UFUNCTION()
+	void OnRep_AttributePoints(int32 OldAttributePoints);
+
+	UFUNCTION()
+	void OnRep_SpellPoints(int32 OldSpellPoints);
+
 public:
 	FPlayerStatChanged OnPlayerXPChanged;
 	FPlayerStatChanged OnPlayerLevelChanged;
@@ -95,4 +101,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_XP)
 	int32 XP = 0;
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_AttributePoints)
+	int32 AttributePoints = 0;
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_SpellPoints)
+	int32 SpellPoints = 0;
 };

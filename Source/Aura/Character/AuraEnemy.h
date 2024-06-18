@@ -32,7 +32,7 @@ public:
 	/** end Enemy Interface */
 
 	/** Combat Interface*/
-	virtual int32 GetPlayerLevel() const override;
+	virtual int32 GetPlayerLevel_Implementation() const override;
 	/** end Combat Interface*/
 
 	virtual void PossessedBy(AController* NewController) override;

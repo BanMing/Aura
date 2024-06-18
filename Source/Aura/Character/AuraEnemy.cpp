@@ -114,7 +114,7 @@ ECharacterClass AAuraEnemy::GetCharacterClass_Implementation() const
 	return CharacterClass;
 }
 
-int32 AAuraEnemy::GetPlayerLevel() const
+int32 AAuraEnemy::GetPlayerLevel_Implementation() const
 {
 	return Level;
 }
