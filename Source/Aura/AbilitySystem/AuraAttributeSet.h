@@ -82,6 +82,7 @@ public:
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsBlockedHit, bool bIsCriticalHit) const;
+	void SendXPEvent(const FEffectProperties& Props);
 
 public:
 #pragma region Primary Attributes

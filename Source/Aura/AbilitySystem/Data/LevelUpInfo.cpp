@@ -32,8 +32,9 @@ void ULevelUpInfo::Serialize(FStructuredArchiveRecord Record)
 	//if (HasAnyFlags(RF_LoadCompleted))
 	//{
 	//	const int32 MaxLevel = 60;
-	//	// LevelUpInfos.Empty();
-	//	for (int32 i = 0; i < MaxLevel; i++)
+	//	LevelUpInfos.Empty();
+	//	LevelUpInfos.Add(FAuraLevelUpInfo());
+	//	for (int32 i = 1; i < MaxLevel; i++)
 	//	{
 	//		FAuraLevelUpInfo Info;
 	//		Info.LevelUpRequirement = pow(3, i) * 100;
