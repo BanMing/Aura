@@ -35,6 +35,20 @@ public:
 	/** Combat Interface*/
 	virtual int32 GetPlayerLevel_Implementation() const override;
 	/** end Combat Interface*/
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<class UNiagaraComponent> LevelUpNiagaraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<class UCameraComponent> TopDownCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<class USpringArmComponent> CameraBoom;
+
 private:
 	virtual void InitAbilityActorInfo() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticsatLevelUpParticles() const;
 };

@@ -17,8 +17,8 @@ void UOverlayAuraWidgetController::BroadcastInitialValues()
 
 	if (AAuraPlayerState* PS = Cast<AAuraPlayerState>(PlayerState))
 	{
-		OnXPChanged(PS->GetPlayerXP());
-		OnPlayerLevelChanged.Broadcast(PS->GetPlayerLevel());
+		//OnXPChanged(PS->GetPlayerXP());
+		//OnPlayerLevelChanged.Broadcast(PS->GetPlayerLevel());
 	}
 }
 
