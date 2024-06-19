@@ -18,6 +18,7 @@ void UOverlayAuraWidgetController::BroadcastInitialValues()
 	if (AAuraPlayerState* PS = Cast<AAuraPlayerState>(PlayerState))
 	{
 		OnXPChanged(PS->GetPlayerXP());
+		OnPlayerLevelChanged.Broadcast(PS->GetPlayerLevel());
 	}
 }
 
@@ -63,6 +64,9 @@ void UOverlayAuraWidgetController::BindCallbacksToDependencies()
 	if (AAuraPlayerState* PS = Cast<AAuraPlayerState>(PlayerState))
 	{
 		PS->OnPlayerXPChanged.AddUObject(this, &ThisClass::OnXPChanged);
+		PS->OnPlayerLevelChanged.AddLambda([this](int32 NewLevel) { OnPlayerLevelChanged.Broadcast(NewLevel); });
+		PS->OnPlayerAttributePointsChanged.AddLambda([this](int32 NewPoints) { OnPlayerAttributePointsChanged.Broadcast(NewPoints); });
+		PS->OnPlayerSpellPointsChanged.AddLambda([this](int32 NewPoints) { OnPlayerSpellPointsChanged.Broadcast(NewPoints); });
 	}
 }
 

@@ -44,3 +44,13 @@ void AAuraPlayerState::OnRep_XP(int32 OldXP)
 {
 	OnPlayerXPChanged.Broadcast(XP);
 }
+
+void AAuraPlayerState::OnRep_AttributePoints(int32 OldAttributePoints)
+{
+	OnPlayerAttributePointsChanged.Broadcast(AttributePoints);
+}
+
+void AAuraPlayerState::OnRep_SpellPoints(int32 OldSpellPoints)
+{
+	OnPlayerSpellPointsChanged.Broadcast(SpellPoints);
+}

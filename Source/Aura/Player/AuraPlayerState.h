@@ -8,6 +8,24 @@
 
 #include "AuraPlayerState.generated.h"
 
+#define PLAYER_STAT_ACCESSORS(PropertyName)                            \
+	FORCEINLINE int32 GetPlayer##PropertyName() const                  \
+	{                                                                  \
+		return this->PropertyName;                                     \
+	}                                                                  \
+                                                                       \
+	FORCEINLINE void Set##PropertyName(int32 In##PropertyName)         \
+	{                                                                  \
+		this->PropertyName = In##PropertyName;                         \
+		OnPlayer##PropertyName##Changed.Broadcast(this->PropertyName); \
+	}                                                                  \
+                                                                       \
+	FORCEINLINE void AddTo##PropertyName(int32 In##PropertyName)       \
+	{                                                                  \
+		this->PropertyName += In##PropertyName;                        \
+		OnPlayer##PropertyName##Changed.Broadcast(this->PropertyName); \
+	}
+
 /**
  *
  */
@@ -29,39 +47,13 @@ public:
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 
-	FORCEINLINE int32 GetPLayerLevel() const
-	{
-		return Level;
-	}
+	PLAYER_STAT_ACCESSORS(Level)
 
-	FORCEINLINE void SetLevel(int32 InLevel)
-	{
-		Level = InLevel;
-		OnPlayerLevelChanged.Broadcast(XP);
-	}
-
-	FORCEINLINE void AddToLevel(int32 InLevel)
-	{
-		Level += InLevel;
-		OnPlayerLevelChanged.Broadcast(Level);
-	}
-
-	FORCEINLINE int32 GetPlayerXP() const
-	{
-		return XP;
-	}
-
-	FORCEINLINE void SetXP(int32 InXP)
-	{
-		XP = InXP;
-		OnPlayerXPChanged.Broadcast(XP);
-	}
-
-	FORCEINLINE void AddToXP(int32 InXP)
-	{
-		XP += InXP;
-		OnPlayerXPChanged.Broadcast(XP);
-	}
+	PLAYER_STAT_ACCESSORS(XP)
+	
+	PLAYER_STAT_ACCESSORS(AttributePoints)
+	
+	PLAYER_STAT_ACCESSORS(SpellPoints)
 
 	FORCEINLINE ULevelUpInfo* GetLevelUpInfo() const
 	{
@@ -84,6 +76,8 @@ private:
 public:
 	FPlayerStatChanged OnPlayerXPChanged;
 	FPlayerStatChanged OnPlayerLevelChanged;
+	FPlayerStatChanged OnPlayerAttributePointsChanged;
+	FPlayerStatChanged OnPlayerSpellPointsChanged;
 
 protected:
 	UPROPERTY(VisibleAnywhere)
