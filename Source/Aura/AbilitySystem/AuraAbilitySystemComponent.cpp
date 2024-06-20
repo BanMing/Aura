@@ -3,7 +3,9 @@
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 
 #include "Abilities/AuraGameplayAbility.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AuraLogChannels.h"
+#include "Interaction/PlayerInterface.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -133,6 +135,31 @@ FGameplayTag UAuraAbilitySystemComponent::GetCooldownTagFromSpec(const FGameplay
 		}
 	}
 	return FGameplayTag();
+}
+
+void UAuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	if (GetAvatarActor()->Implements<UPlayerInterface>())
+	{
+		if (IPlayerInterface::Execute_GetAttributePoints(GetAvatarActor()) > 0)
+		{
+			ServerUpgradeAttribute(AttributeTag);
+		}
+	}
+}
+
+void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGameplayTag& AttributeTag)
+{
+	FGameplayEventData Payload;
+	Payload.EventTag = AttributeTag;
+	Payload.EventMagnitude = 1.0f;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetAvatarActor(), AttributeTag, Payload);
+
+	if (GetAvatarActor()->Implements<UPlayerInterface>())
+	{
+		IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+	}
 }
 
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()

@@ -23,6 +23,8 @@ void AAuraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	
 	DOREPLIFETIME(ThisClass, Level);
 	DOREPLIFETIME(ThisClass, XP);
+	DOREPLIFETIME(ThisClass, AttributePoints);
+	DOREPLIFETIME(ThisClass, SpellPoints);
 }
 
 UAbilitySystemComponent* AAuraPlayerState::GetAbilitySystemComponent() const

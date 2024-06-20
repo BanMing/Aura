@@ -34,6 +34,11 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetCooldownTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+
+	UFUNCTION(Server,Reliable)
+	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
+
 protected:
 	UFUNCTION(Client, Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);

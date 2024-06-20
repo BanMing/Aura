@@ -39,6 +39,12 @@ public:
 	int32 GetSpellPointReward(int32 Level) const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	int32 GetAttributePoints() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	int32 GetSpellPoints() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void AddPlayerLevel(int32 InLevel);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

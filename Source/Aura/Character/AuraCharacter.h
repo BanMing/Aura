@@ -30,6 +30,8 @@ public:
 	virtual void AddPlayerLevel_Implementation(int32 InLevel) override;
 	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
 	virtual void AddToSpellPoints_Implementation(int32 InSpellPoints) override;
+	virtual int32 GetAttributePoints_Implementation() const;
+	virtual int32 GetSpellPoints_Implementation() const;
 	/** end Player Interface*/
 
 	/** Combat Interface*/
