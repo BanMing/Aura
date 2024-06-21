@@ -84,6 +84,10 @@ private:
 	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsBlockedHit, bool bIsCriticalHit) const;
 	void SendXPEvent(const FEffectProperties& Props);
 
+private:
+	bool bTopOffHealth = false;
+	bool bTopOffMana = false;
+
 public:
 #pragma region Primary Attributes
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")
