@@ -9,6 +9,7 @@
 
 struct FAuraAttributeInfo;
 struct FGameplayTag;
+struct FGameplayAttribute;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
 

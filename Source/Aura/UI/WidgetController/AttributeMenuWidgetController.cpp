@@ -2,6 +2,9 @@
 
 #include "Aura/UI/WidgetController/AttributeMenuWidgetController.h"
 
+#include "AttributeSet.h"
+#include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "Aura/AbilitySystem/Data/AttributeInfo.h"
 #include "Aura/AuraGameplayTags.h"
 #include "GameplayTagContainer.h"
@@ -9,10 +12,9 @@
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
-	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 	check(AttributeInfo);
 
-	for (auto& Item : AuraAttributeSet->TagsToAttributes)
+	for (auto& Item : GetAuraAttributeSet()->TagsToAttributes)
 	{
 		BroadcastAttributeInfo(Item.Key, Item.Value());
 	}
@@ -26,14 +28,12 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
-
-	for (auto& Item : AuraAttributeSet->TagsToAttributes)
+	for (auto& Item : GetAuraAttributeSet()->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Item.Value()).AddLambda([this, Item](const FOnAttributeChangeData& Data) { BroadcastAttributeInfo(Item.Key, Item.Value()); });
 	}
 
-	if (AAuraPlayerState* PS = Cast<AAuraPlayerState>(PlayerState))
+	if (AAuraPlayerState* PS = GetAuraPS())
 	{
 		PS->OnPlayerAttributePointsChanged.AddLambda([this](int32 NewPoints) { OnPlayerAttributePointsChanged.Broadcast(NewPoints); });
 		PS->OnPlayerSpellPointsChanged.AddLambda([this](int32 NewPoints) { OnPlayerSpellPointsChanged.Broadcast(NewPoints); });
@@ -42,8 +42,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
-	UAuraAbilitySystemComponent* ASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	ASC->UpgradeAttribute(AttributeTag);
+	GetAuraASC()->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& Tag, const FGameplayAttribute& GameplayAttribute)

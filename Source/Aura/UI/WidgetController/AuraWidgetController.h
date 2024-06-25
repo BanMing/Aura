@@ -2,18 +2,22 @@
 
 #pragma once
 
-#include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
-#include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerState.h"
 #include "UObject/NoExportTypes.h"
 
 #include "AuraWidgetController.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangeSignature, int32, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FAuraAbilityInfo&, Info);
 
 class UAttributeSet;
+class UAbilitySystemComponent;
+class APlayerController;
+class APlayerState;
 class UAuraAttributeSet;
+class AAuraPlayerState;
+class AAuraPlayerController;
+class UAuraAbilitySystemComponent;
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
@@ -52,11 +56,27 @@ class AURA_API UAuraWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
-	
+
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 	UFUNCTION(BlueprintCallable)
 	virtual void BindCallbacksToDependencies();
+
+protected:
+	void OnInitializeStartupAbilities(UAuraAbilitySystemComponent* ASC);
+
+	UFUNCTION(BlueprintPure)
+	AAuraPlayerController* GetAuraPC();
+	UFUNCTION(BlueprintPure)
+	AAuraPlayerState* GetAuraPS();
+	UFUNCTION(BlueprintPure)
+	UAuraAbilitySystemComponent* GetAuraASC();
+	UFUNCTION(BlueprintPure)
+	UAuraAttributeSet* GetAuraAttributeSet();
+
+protected:
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Ability")
+	FAbilityInfoSignature AbilityInfoDelegate;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
@@ -71,6 +91,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-public:
-	// void
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
+	TObjectPtr<class UAbilityInfo> AbilityInfo;
+
+private:
+	TObjectPtr<AAuraPlayerController> AuraPC;
+	TObjectPtr<AAuraPlayerState> AuraPS;
+	TObjectPtr<UAuraAbilitySystemComponent> AuraASC;
+	TObjectPtr<UAuraAttributeSet> AuraAttributeSet;
 };
