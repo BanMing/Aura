@@ -1,6 +1,11 @@
 // Copyright BanMing
-
 #include "Aura/UI/HUD/AuraHUD.h"
+
+#include "Aura/UI/Widget/AuraUserWidget.h"
+#include "Aura/UI/WidgetController/AttributeMenuWidgetController.h"
+#include "Aura/UI/WidgetController/AuraWidgetController.h"
+#include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 UOverlayAuraWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
@@ -41,4 +46,16 @@ UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuController(const FWidg
 	}
 
 	return AttributeMenuController;
+}
+
+USpellMenuWidgetController* AAuraHUD::GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (SpellMenuController == nullptr)
+	{
+		SpellMenuController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
+		SpellMenuController->SetWidgetControllerParams(WCParams);
+		SpellMenuController->BindCallbacksToDependencies();
+	}
+
+	return SpellMenuController;
 }

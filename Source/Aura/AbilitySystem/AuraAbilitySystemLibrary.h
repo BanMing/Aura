@@ -2,13 +2,17 @@
 
 #pragma once
 
-#include "Aura/UI/WidgetController/AttributeMenuWidgetController.h"
-#include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
 #include "CoreMinimal.h"
-#include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "AuraAbilitySystemLibrary.generated.h"
+
+class UOverlayAuraWidgetController;
+class UAttributeMenuWidgetController;
+class USpellMenuWidgetController;
+class UCharacterClassInfo;
+class UAbilitySystemComponent;
+struct FWidgetControllerParams;
 /**
  *
  */
@@ -18,11 +22,17 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutParams, AAuraHUD*& OutAuraHUD);
+
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UOverlayAuraWidgetController* GetOverlayAuraWidgetController(const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController")
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|CharacterClassesDefaults")
 	static void InitDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);
@@ -47,7 +57,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayMechanics")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayMechanics")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 

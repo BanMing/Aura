@@ -2,13 +2,20 @@
 
 #pragma once
 
-#include "Aura/UI/Widget/AuraUserWidget.h"
-#include "Aura/UI/WidgetController/AttributeMenuWidgetController.h"
-#include "Aura/UI/WidgetController/OverlayAuraWidgetController.h"
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 
 #include "AuraHUD.generated.h"
+
+class UOverlayAuraWidgetController;
+class UAttributeMenuWidgetController;
+class USpellMenuWidgetController;
+class UAuraUserWidget;
+struct FWidgetControllerParams;
+class UAbilitySystemComponent;
+class APlayerController;
+class APlayerState;
+class UAttributeSet;
 
 /**
  *
@@ -24,6 +31,7 @@ public:
 	void InitOverlay(APlayerController* PlayerController, APlayerState* PlayerState, UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet);
 
 	UAttributeMenuWidgetController* GetAttributeMenuController(const FWidgetControllerParams& WCParams);
+	USpellMenuWidgetController* GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams);
 
 private:
 	TObjectPtr<UAuraUserWidget> OverlayWidget;
@@ -42,4 +50,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+
+	UPROPERTY()
+	TObjectPtr<USpellMenuWidgetController> SpellMenuController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
 };
