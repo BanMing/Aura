@@ -4,8 +4,10 @@
 
 void USpellMenuWidgetController::BroadcastInitialValues()
 {
+	OnInitializeStartupAbilities(GetAuraASC());
 }
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
+	Super::BindCallbacksToDependencies();
 }

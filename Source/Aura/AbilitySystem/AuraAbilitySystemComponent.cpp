@@ -124,7 +124,7 @@ FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 
 FGameplayTag UAuraAbilitySystemComponent::GetCooldownTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
 {
-	if (AbilitySpec.Ability)
+	if (AbilitySpec.Ability && AbilitySpec.Ability->GetCooldownTags())
 	{
 		for (const FGameplayTag& Tag : *AbilitySpec.Ability->GetCooldownTags())
 		{
