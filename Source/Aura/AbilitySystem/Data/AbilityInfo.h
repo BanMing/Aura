@@ -17,6 +17,9 @@ struct FAuraAbilityInfo
 	FGameplayTag AbilityTag = FGameplayTag();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
+	FGameplayTag StatusTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
 	TObjectPtr<const UTexture2D> Icon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
@@ -24,7 +27,7 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
 	FGameplayTag InputTag = FGameplayTag();
-	
+
 	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
 	FGameplayTag CooldownTag = FGameplayTag();
 };

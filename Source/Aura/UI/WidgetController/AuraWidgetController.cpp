@@ -49,6 +49,7 @@ void UAuraWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemCompo
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(UAuraAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
 			Info.InputTag = UAuraAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
 			Info.CooldownTag = UAuraAbilitySystemComponent::GetCooldownTagFromSpec(AbilitySpec);
+			Info.StatusTag = UAuraAbilitySystemComponent::GetStatusFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		});
 	ASC->ForEachAbility(BroadcastDelegate);
