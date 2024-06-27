@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|CharacterClassesDefaults")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
 
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|CharacterClassesDefaults")
+	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
+
 	UFUNCTION(BlueprintPure, Category = "Aura Ability System Library|GameplayEffects")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
 

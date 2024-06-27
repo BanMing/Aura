@@ -8,6 +8,7 @@
 
 #include "AbilityInfo.generated.h"
 
+class UGameplayAbility;
 USTRUCT(BlueprintType)
 struct FAuraAbilityInfo
 {
@@ -30,6 +31,12 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
 	FGameplayTag CooldownTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
+	int32 LevelRequirement;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
+	TSubclassOf<UGameplayAbility> Ability;
 };
 
 /**
