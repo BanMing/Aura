@@ -19,10 +19,9 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 		BroadcastAttributeInfo(Item.Key, Item.Value());
 	}
 
-	if (AAuraPlayerState* PS = Cast<AAuraPlayerState>(PlayerState))
+	if (AAuraPlayerState* PS = GetAuraPS())
 	{
 		OnPlayerAttributePointsChanged.Broadcast(PS->GetPlayerAttributePoints());
-		OnPlayerSpellPointsChanged.Broadcast(PS->GetPlayerSpellPoints());
 	}
 }
 
@@ -36,8 +35,8 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	if (AAuraPlayerState* PS = GetAuraPS())
 	{
 		PS->OnPlayerAttributePointsChanged.AddLambda([this](int32 NewPoints) { OnPlayerAttributePointsChanged.Broadcast(NewPoints); });
-		PS->OnPlayerSpellPointsChanged.AddLambda([this](int32 NewPoints) { OnPlayerSpellPointsChanged.Broadcast(NewPoints); });
 	}
+	Super::BindCallbacksToDependencies();
 }
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)

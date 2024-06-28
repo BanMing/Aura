@@ -39,7 +39,4 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Player Stat")
 	FOnPlayerStatChangeSignature OnPlayerAttributePointsChanged;
-
-	UPROPERTY(BlueprintAssignable, Category = "GAS|Player Stat")
-	FOnPlayerStatChangeSignature OnPlayerSpellPointsChanged;
 };
