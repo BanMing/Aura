@@ -8,6 +8,8 @@
 #include "AuraAbilitySystemLibrary.h"
 #include "AuraGameplayTags.h"
 #include "AuraLogChannels.h"
+#include "GameplayAbilitySpec.h"
+#include "GameplayTagContainer.h"
 #include "Interaction/PlayerInterface.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
@@ -188,17 +190,41 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 		if (!Info.AbilityTag.IsValid() || Level < Info.LevelRequirement)
 			continue;
 
-		if ( GetSpecFromAbilityTag(Info.AbilityTag)==nullptr)
+		if (GetSpecFromAbilityTag(Info.AbilityTag) == nullptr)
 		{
 			FGameplayAbilitySpec Spec = FGameplayAbilitySpec(Info.Ability, 1);
-			Spec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Equipped);
+			Spec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
 			GiveAbility(Spec);
 			MarkAbilitySpecDirty(Spec);
-			ClientUpdateAbilityStatus(Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Equipped);
+			ClientUpdateAbilityStatus(Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible, Spec.Level);
 		}
 	}
 }
 
+void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGameplayTag& AbilityTag)
+{
+	if (FGameplayAbilitySpec* Spec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (GetAvatarActor()->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToSpellPoints(GetAvatarActor(), -1);
+		}
+
+		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+		const FGameplayTag StatusTag = GetStatusFromSpec(*Spec);
+		if (StatusTag.MatchesTagExact(GameplayTags.Abilities_Status_Eligible))
+		{
+			Spec->DynamicAbilityTags.RemoveTag(GameplayTags.Abilities_Status_Eligible);
+			Spec->DynamicAbilityTags.AddTag(GameplayTags.Abilities_Status_Unlocked);
+		}
+		else if (StatusTag.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) || StatusTag.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
+		{
+			Spec->Level += 1;
+		}
+		ClientUpdateAbilityStatus(AbilityTag, GetStatusFromSpec(*Spec), Spec->Level);
+		MarkAbilitySpecDirty(*Spec);
+	}
+}
 void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGameplayTag& AttributeTag)
 {
 	FGameplayEventData Payload;
@@ -213,9 +239,9 @@ void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 	}
 }
 
-void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const int32 AbilityLevel)
 {
-	OnAbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
+	OnAbilityStatusChanged.Broadcast(AbilityTag, StatusTag, AbilityLevel);
 }
 
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()

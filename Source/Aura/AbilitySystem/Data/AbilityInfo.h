@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "AuraGameplayTags.h"
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "GameplayTagContainer.h"
@@ -15,10 +16,10 @@ struct FAuraAbilityInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
-	FGameplayTag AbilityTag = FGameplayTag();
+	FGameplayTag AbilityTag = FAuraGameplayTags::Get().Abilities_None;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
-	FGameplayTag StatusTag = FGameplayTag();
+	FGameplayTag StatusTag = FAuraGameplayTags::Get().Abilities_Status_Locked;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
 	TObjectPtr<const UTexture2D> Icon = nullptr;
@@ -34,6 +35,9 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
 	int32 LevelRequirement;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ability Info")
+	int32 AbilityLevel;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
 	TSubclassOf<UGameplayAbility> Ability;
