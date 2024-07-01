@@ -1,4 +1,4 @@
-// Copyright BanMing
+﻿// Copyright BanMing
 
 #pragma once
 
@@ -9,7 +9,7 @@
 
 #include "SpellMenuWidgetController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpellGlobeSelectedSignature, bool, bSpendPointButtonEnable, bool, bEquipButtonEnabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignature, bool, bSpendPointButtonEnable, bool, bEquipButtonEnabled, FString, Description, FString, NextLevelDescription);
 
 struct FSelectedAbility
 {
@@ -44,7 +44,7 @@ public:
 	FOnPlayerStatChangeSignature OnPlayerSpellPointsChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Player Stat")
-	FSpellGlobeSelectedSignature OnSpellGlobleSelected;
+	FSpellGlobeSelectedSignature OnSpellGlobeSelected;
 
 private:
 	FSelectedAbility SelectedAbility;

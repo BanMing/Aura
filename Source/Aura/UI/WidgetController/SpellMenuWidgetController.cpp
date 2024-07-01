@@ -19,7 +19,7 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
 	GetAuraASC()->OnAbilityStatusChanged.AddLambda(
-		[this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,const int32 AbilityLevel)
+		[this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const int32 AbilityLevel)
 		{
 			if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
 			{
@@ -105,6 +105,10 @@ void USpellMenuWidgetController::UpdateButtonStatus()
 {
 	bool bSpendPointButtonEnable = false;
 	bool bEquipButtonEnabled = false;
+	FString Description;
+	FString NextLevelDescription;
+
 	ShouldEnableButtons(SelectedAbility.Status, CurrentSpellPoints, bSpendPointButtonEnable, bEquipButtonEnabled);
-	OnSpellGlobleSelected.Broadcast(bSpendPointButtonEnable, bEquipButtonEnabled);
+	GetAuraASC()->GetDescriptionsByAbilityTag(SelectedAbility.Ability, Description, NextLevelDescription);
+	OnSpellGlobeSelected.Broadcast(bSpendPointButtonEnable, bEquipButtonEnabled, Description, NextLevelDescription);
 }

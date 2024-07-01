@@ -5,6 +5,7 @@
 #include "Abilities/AuraGameplayAbility.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Aura/AbilitySystem/Abilities/AuraGameplayAbility.h"
 #include "AuraAbilitySystemLibrary.h"
 #include "AuraGameplayTags.h"
 #include "AuraLogChannels.h"
@@ -199,6 +200,27 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			ClientUpdateAbilityStatus(Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible, Spec.Level);
 		}
 	}
+}
+
+bool UAuraAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription)
+{
+	if (const FGameplayAbilitySpec* Spec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (const UAuraGameplayAbility* Ability = Cast<UAuraGameplayAbility>(Spec->Ability))
+		{
+			OutDescription = Ability->GetDescription(Spec->Level);
+			OutNextLevelDescription = Ability->GetNextLevelDescription(Spec->Level + 1);
+			return true;
+		}
+	}
+
+	// Get unlocked description
+	const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	const FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(AbilityTag);
+	OutDescription = UAuraGameplayAbility::GetLockedDescription(Info.LevelRequirement);
+	OutNextLevelDescription = FString();
+
+	return false;
 }
 
 void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGameplayTag& AbilityTag)
