@@ -22,6 +22,9 @@ struct FAuraAbilityInfo
 	FGameplayTag StatusTag = FAuraGameplayTags::Get().Abilities_Status_Locked;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
+	FGameplayTag AbilityType = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
 	TObjectPtr<const UTexture2D> Icon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability Info")
