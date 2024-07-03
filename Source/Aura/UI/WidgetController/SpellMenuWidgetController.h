@@ -42,9 +42,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EquipButtonPressed();
 
+	UFUNCTION(BlueprintCallable)
+	void SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType);
+
 private:
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 Spellpoints, bool& bSpendPointButtonEnable, bool& bEquipButtonEnabled);
 	void UpdateButtonStatus();
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& SlotTag, const FGameplayTag& PreSlotTag);
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Player Stat")
@@ -63,4 +67,5 @@ private:
 	FSelectedAbility SelectedAbility;
 	int32 CurrentSpellPoints = 0;
 	bool bWaitingForEquipSelection = true;
+	FGameplayTag SelectedSlot;
 };

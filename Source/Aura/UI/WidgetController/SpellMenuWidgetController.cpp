@@ -34,6 +34,8 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			}
 		});
 
+	GetAuraASC()->OnAbilityEquipped.AddUObject(this, &USpellMenuWidgetController::OnAbilityEquipped);
+
 	if (AAuraPlayerState* PS = GetAuraPS())
 	{
 		PS->OnPlayerSpellPointsChanged.AddLambda(
@@ -100,6 +102,28 @@ void USpellMenuWidgetController::EquipButtonPressed()
 	const FGameplayTag AbilityType = AbilityInfo->FindAbilityInfoByTag(SelectedAbility.Ability).AbilityType;
 	OnWaitForEquipSelection.Broadcast(AbilityType);
 	bWaitingForEquipSelection = true;
+
+	const FGameplayTag SelectedStatus = GetAuraASC()->GetStatusFromAbilityTag(SelectedAbility.Ability);
+	if (SelectedStatus.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Equipped))
+	{
+		SelectedSlot = GetAuraASC()->GetInputTagFromAbilityTag(SelectedAbility.Ability);
+	}
+}
+
+void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType)
+{
+	if (!bWaitingForEquipSelection)
+	{
+		return;
+	}
+
+	const FGameplayTag& SelectedAbilityType = AbilityInfo->FindAbilityInfoByTag(SelectedAbility.Ability).AbilityType;
+	if (!SelectedAbilityType.MatchesTagExact(AbilityType))
+	{
+		return;
+	}
+
+	GetAuraASC()->ServerEquipAbility(SelectedAbility.Ability, SlotTag);
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 Spellpoints, bool& bSpendPointButtonEnable, bool& bEquipButtonEnabled)
@@ -138,4 +162,24 @@ void USpellMenuWidgetController::UpdateButtonStatus()
 	ShouldEnableButtons(SelectedAbility.Status, CurrentSpellPoints, bSpendPointButtonEnable, bEquipButtonEnabled);
 	GetAuraASC()->GetDescriptionsByAbilityTag(SelectedAbility.Ability, Description, NextLevelDescription);
 	OnSpellGlobeSelected.Broadcast(bSpendPointButtonEnable, bEquipButtonEnabled, Description, NextLevelDescription);
+}
+
+void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& SlotTag, const FGameplayTag& PreSlotTag)
+{
+	bWaitingForEquipSelection = false;
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+
+	// Clear prevous ability widget info
+	FAuraAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreSlotTag;
+	LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(AbilityTag);
+	Info.StatusTag = Status;
+	Info.InputTag = SlotTag;
+	AbilityInfoDelegate.Broadcast(Info);
+
+	OnStopWaitingForEquipSelection.Broadcast(Info.AbilityType);
 }
