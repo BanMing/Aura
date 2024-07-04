@@ -42,6 +42,7 @@ void UOverlayAuraWidgetController::BindCallbacksToDependencies()
 					}
 				}
 			});
+		GetAuraASC()->OnAbilityEquipped.AddUObject(this, &ThisClass::OnAbilityEquipped);
 	}
 
 	if (AAuraPlayerState* PS = GetAuraPS())
@@ -74,4 +75,21 @@ void UOverlayAuraWidgetController::OnXPChanged(int32 NewXP) const
 		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelRequirement);
 		OnPlayerXPPercentChanged.Broadcast(XPBarPercent);
 	}
+}
+
+void UOverlayAuraWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& SlotTag, const FGameplayTag& PreSlotTag) const
+{
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+
+	// Clear prevous ability widget info
+	FAuraAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreSlotTag;
+	LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(AbilityTag);
+	Info.StatusTag = Status;
+	Info.InputTag = SlotTag;
+	AbilityInfoDelegate.Broadcast(Info);
 }
