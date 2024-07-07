@@ -46,46 +46,42 @@ void AAuraProjectile::Destroyed()
 {
 	if (!bHit && !HasAuthority())
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-
-		if (LoopSoundComp)
-		{
-			LoopSoundComp->Stop();
-		}
-		bHit = true;
+		OnHit();
 	}
 	Super::Destroyed();
 }
 
+void AAuraProjectile::OnHit()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+
+	if (LoopSoundComp)
+	{
+		LoopSoundComp->Stop();
+	}
+	bHit = true;
+}
+
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
-	{
-		return;
-	}
-	
-	if (!UAuraAbilitySystemLibrary::IsNotFriend(OtherActor, DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser()))
+	AActor* SourceAvatarActor = DamageEffectParams.SourceASC->GetAvatarActor();
+	if (SourceAvatarActor == OtherActor || !UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor))
 	{
 		return;
 	}
 
 	if (!bHit)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		if (LoopSoundComp)
-		{
-			LoopSoundComp->Stop();
-		}
-		bHit = true;
+		OnHit();
 	}
 
 	if (HasAuthority())
 	{
 		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+			DamageEffectParams.TargetASC = TargetASC;
+			UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
 
 		Destroy();

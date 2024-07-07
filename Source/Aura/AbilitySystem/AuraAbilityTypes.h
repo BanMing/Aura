@@ -1,9 +1,68 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/NetSerialization.h"
 #include "GameplayEffectTypes.h"
+#include "GameplayTagContainer.h"
+#include "Templates/SubclassOf.h"
 
 #include "AuraAbilityTypes.generated.h"
+class UGameplayEffect;
+class UAbilitySystemComponent;
+
+#define EFFECT_CONTEXT_ACCESSORS(PropertyType, PropertyName)          \
+	FORCEINLINE PropertyType Get##PropertyName() const                \
+	{                                                                 \
+		return this->PropertyName;                                    \
+	}                                                                 \
+                                                                      \
+	FORCEINLINE void Set##PropertyName(PropertyType In##PropertyName) \
+	{                                                                 \
+		this->PropertyName = In##PropertyName;                        \
+	}
+
+USTRUCT(BlueprintType)
+struct FDamageEffectParams
+{
+	GENERATED_BODY()
+
+	FDamageEffectParams()
+	{
+	}
+
+	UPROPERTY()
+	TObjectPtr<UObject> WorldCOntextObject = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> SourceASC = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> TargetASC = nullptr;
+
+	UPROPERTY()
+	float BaseDamage = 0.f;
+
+	UPROPERTY()
+	int32 AbilityLevel = 1;
+
+	UPROPERTY()
+	FGameplayTag DamageType = FGameplayTag();
+
+	UPROPERTY()
+	float DebuffChance = 0.f;
+
+	UPROPERTY()
+	float DebuffDamage = 0.f;
+
+	UPROPERTY()
+	float DebuffDuration = 0.f;
+
+	UPROPERTY()
+	float DebuffFrequency = 0.f;
+};
 
 USTRUCT(BlueprintType)
 struct FAuraGameplayEffectContext : public FGameplayEffectContext
@@ -30,29 +89,27 @@ public:
 			// Does a deep copy of the hit result
 			NewContext->AddHitResult(*GetHitResult(), true);
 		}
+		if (GetDamageType())
+		{
+			// NewContext->SetDamageType()
+		}
 		return NewContext;
 	}
 
 public:
-	bool IsBlockedHit() const
+	EFFECT_CONTEXT_ACCESSORS(bool, bIsBlockedHit)
+	EFFECT_CONTEXT_ACCESSORS(bool, bIsCriticalHit)
+	EFFECT_CONTEXT_ACCESSORS(bool, bIsSuccessfulDebuff)
+	EFFECT_CONTEXT_ACCESSORS(float, DebuffDamage)
+	EFFECT_CONTEXT_ACCESSORS(float, DebuffDuration)
+	EFFECT_CONTEXT_ACCESSORS(float, DebuffFrequency)
+
+	FORCEINLINE TSharedPtr<FGameplayTag> GetDamageType() const
 	{
-		return bIsBlockedHit;
+		return this->DamageType;
 	}
 
-	bool IsCriticalHit() const
-	{
-		return bIsCriticalHit;
-	}
-
-	void SetIsBlockedHit(bool IsBlockedHit)
-	{
-		bIsBlockedHit = IsBlockedHit;
-	}
-
-	void SetIsCriticalHit(bool IsCriticalHit)
-	{
-		bIsCriticalHit = IsCriticalHit;
-	}
+	void SetDamageType(const FGameplayTag& InDamageType, bool bReset = false);
 
 protected:
 	UPROPERTY()
@@ -60,6 +117,20 @@ protected:
 
 	UPROPERTY()
 	bool bIsCriticalHit = false;
+
+	UPROPERTY()
+	bool bIsSuccessfulDebuff = false;
+
+	UPROPERTY()
+	float DebuffDamage = -1.f;
+
+	UPROPERTY()
+	float DebuffDuration = -1.f;
+
+	UPROPERTY()
+	float DebuffFrequency = -1.f;
+
+	TSharedPtr<FGameplayTag> DamageType;
 };
 
 template <>

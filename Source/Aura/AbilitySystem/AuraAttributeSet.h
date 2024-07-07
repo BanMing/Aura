@@ -19,6 +19,7 @@ const float kMaxAttributeAmount = 100.f;
 class AController;
 class ACharacter;
 class UAbilitySystemComponent;
+struct FGameplayEffectModCallbackData;
 
 USTRUCT()
 struct FEffectProperties
@@ -76,6 +77,10 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+	void HandleInComingDamage(const FEffectProperties& Props);
+	void HandleDebuff(const FEffectProperties& Props);
+	void HandleInComingXP(const FEffectProperties& Props);
 
 	TMap<FGameplayTag, FStaticFunctionPtr<FGameplayAttribute()>> TagsToAttributes;
 	// TMap<FGameplayTag, FGameplayAttribute (*)()> TagsToAttributes;
