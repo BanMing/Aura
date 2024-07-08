@@ -72,6 +72,7 @@ void AAuraEnemy::InitAbilityActorInfo()
 	{
 		UAuraAbilitySystemLibrary::InitDefaultAttributes(this, CharacterClass, Level, ASC);
 	}
+	OnASCRegistered.Broadcast(AbilitySystemComponent);
 }
 
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)

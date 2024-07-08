@@ -9,6 +9,7 @@
 #include "AuraGameplayTags.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -108,6 +109,16 @@ int32 AAuraCharacterBase::GetMinionCount_Implementation() const
 void AAuraCharacterBase::IncrementMinionCount_Implementation(int Amount)
 {
 	MinionCount += Amount;
+}
+
+FOnASCRegistered AAuraCharacterBase::GetOnASCRegisteredDelegate()
+{
+	return OnASCRegistered;
+}
+
+FOnDeath AAuraCharacterBase::GetOnDeathDelegate()
+{
+	return OnDeath;
 }
 
 void AAuraCharacterBase::MulticastHandleDeath_Implementation()

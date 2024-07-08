@@ -166,6 +166,8 @@ void AAuraCharacter::InitAbilityActorInfo()
 		}
 	}
 
+	OnASCRegistered.Broadcast(AbilitySystemComponent);
+
 	Super::InitAbilityActorInfo();
 }
 
