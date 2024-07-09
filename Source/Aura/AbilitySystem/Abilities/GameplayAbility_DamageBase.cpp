@@ -36,6 +36,7 @@ FDamageEffectParams UGameplayAbility_DamageBase::MakeDamageEffectParamsFromClass
 	Params.DebuffDamage = DebuffDamage;
 	Params.DebuffDuration = DebuffDuration;
 	Params.DebuffFrequency = DebuffFrequency;
+	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 
 	return Params;
 }

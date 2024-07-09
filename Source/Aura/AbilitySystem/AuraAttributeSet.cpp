@@ -8,6 +8,7 @@
 #include "Aura/Interaction/EnemyInterface.h"
 #include "AuraAbilityTypes.h"
 #include "GameFramework/Character.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 #include "GameplayEffectExtension.h"
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
@@ -176,7 +177,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		return;
 	}
-	
+
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		// float CurrentValue = Health.GetCurrentValue();
@@ -250,7 +251,11 @@ void UAuraAttributeSet::HandleDebuff(const FEffectProperties& Props)
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 
-	Effect->InheritableBlockedAbilityTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffTypes[DamageType]);
+	const FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuffTypes[DamageType];
+	UTargetTagsGameplayEffectComponent& TargetTagsGEComp = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
+	FInheritedTagContainer TagContainerMods;
+	TagContainerMods.Added.AddTag(DebuffTag);
+	TargetTagsGEComp.SetAndApplyTargetTagChanges(TagContainerMods);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount = 1;
@@ -263,8 +268,7 @@ void UAuraAttributeSet::HandleDebuff(const FEffectProperties& Props)
 	ModifierInfo.ModifierOp = EGameplayModOp::Additive;
 	ModifierInfo.Attribute = UAuraAttributeSet::GetInComingDamgeAttribute();
 
-	FGameplayEffectSpec* MutalbeSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f);
-	if (MutalbeSpec)
+	if (FGameplayEffectSpec* MutalbeSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f))
 	{
 		FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(MutalbeSpec->GetContext().Get());
 		AuraContext->SetDamageType(DamageType, true);
