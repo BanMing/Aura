@@ -29,7 +29,7 @@ public:
 	// Combat Interface
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& Montage) override;
 	virtual UAnimMontage* GetHitReactAnimMontage_Implementation() override;
-	virtual void Die() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual const TArray<FTaggedMontage> GetAttackMontages_Implementation() const override;
@@ -41,7 +41,7 @@ public:
 	virtual FOnDeath GetOnDeathDelegate() override;
 
 	UFUNCTION(NetMulticast, Reliable)
-	virtual void MulticastHandleDeath();
+	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
 
 protected:
 	virtual void BeginPlay() override;

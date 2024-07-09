@@ -64,7 +64,10 @@ struct FDamageEffectParams
 	float DebuffFrequency = 0.f;
 
 	UPROPERTY()
-	float DeathImpulseMagnitude = 0.f;
+	float DeathImpulseMagnitude = 1.f;
+	
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)
@@ -106,6 +109,7 @@ public:
 	EFFECT_CONTEXT_ACCESSORS(float, DebuffDamage)
 	EFFECT_CONTEXT_ACCESSORS(float, DebuffDuration)
 	EFFECT_CONTEXT_ACCESSORS(float, DebuffFrequency)
+	EFFECT_CONTEXT_ACCESSORS(FVector, DeathImpulse)
 
 	FORCEINLINE TSharedPtr<FGameplayTag> GetDamageType() const
 	{
@@ -134,6 +138,9 @@ protected:
 	float DebuffFrequency = -1.f;
 
 	TSharedPtr<FGameplayTag> DamageType;
+	
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 };
 
 template <>

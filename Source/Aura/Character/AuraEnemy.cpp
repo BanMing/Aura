@@ -137,12 +137,12 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AIController->GetBlackboardComponent()->SetValueAsBool("RangeAttacker", CharacterClass != ECharacterClass::Warrior);
 }
 
-void AAuraEnemy::Die()
+void AAuraEnemy::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(Lifespan);
 	if (AIController)
 	{
 		AIController->GetBlackboardComponent()->SetValueAsBool("Dead", true);
 	}
-	Super::Die();
+	Super::Die(DeathImpulse);
 }

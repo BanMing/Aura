@@ -37,7 +37,7 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void Die() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 
 protected:
 	virtual void BeginPlay() override;
