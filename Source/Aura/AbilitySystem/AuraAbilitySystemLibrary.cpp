@@ -345,6 +345,7 @@ FGameplayEffectSpecHandle UAuraAbilitySystemLibrary::ApplyDamageEffect(const FDa
 	EffectContextHandle.AddSourceObject(SourceAvatarActor);
 
 	SetDeathImpulse(EffectContextHandle, Params.DeathImpulse);
+	SetKnockbackImpulse(EffectContextHandle, Params.KnockbackImpulse);
 
 	const FGameplayEffectSpecHandle EffectSpecHandle = Params.SourceASC->MakeOutgoingSpec(Params.DamageGameplayEffectClass, Params.AbilityLevel, EffectContextHandle);
 
