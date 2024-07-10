@@ -83,7 +83,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void IncrementMinionCount(int Amount = 1);
 
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() = 0;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 
-	virtual FOnDeath GetOnDeathDelegate() = 0;
+	virtual FOnDeath& GetOnDeathDelegate() = 0;
 };

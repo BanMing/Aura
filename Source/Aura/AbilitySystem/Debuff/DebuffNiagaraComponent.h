@@ -22,6 +22,7 @@ public:
 
 protected:
 	void OnDebuffTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
 	UFUNCTION()
 	void OnOwnerDeath(AActor* DeadActor);
 
