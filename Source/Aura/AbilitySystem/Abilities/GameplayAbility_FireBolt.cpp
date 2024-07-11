@@ -7,6 +7,7 @@
 #include "Actor/AuraProjectile.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AuraGameplayTags.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "GameplayEffectTypes.h"
 
 FString UGameplayAbility_FireBolt::GetDescription(int32 Level) const
@@ -77,6 +78,22 @@ void UGameplayAbility_FireBolt::SpawnProjectiles(const FVector& ProjectileTarget
 			GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, GetOwningActorFromActorInfo(), Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+		if (bIsHomingProjectiles)
+		{
+			if (HomingTarget && HomingTarget->Implements<UCombatInterface>())
+			{
+				Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
+			}
+			else
+			{
+				Projectile->HomingTargetComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
+				Projectile->HomingTargetComponent->SetWorldLocation(ProjectileTargetLocation);
+				Projectile->ProjectileMovement->HomingTargetComponent = Projectile->HomingTargetComponent;
+			}
+			Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
+			Projectile->ProjectileMovement->bIsHomingProjectile = bIsHomingProjectiles;
+		}
+
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

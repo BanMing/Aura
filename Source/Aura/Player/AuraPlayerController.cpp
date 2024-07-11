@@ -14,6 +14,8 @@
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "UI/Widget/DamageTextComponent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -239,6 +241,8 @@ void AAuraPlayerController::MoveClickedMove()
 				bAutoRunning = true;
 			}
 		}
+
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CacheDestination);
 	}
 	bTargeting = false;
 	FollowTime = 0.f;

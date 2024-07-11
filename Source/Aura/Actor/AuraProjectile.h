@@ -22,6 +22,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = "true"))
 	FDamageEffectParams DamageEffectParams;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;
+	
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetComponent;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
@@ -39,9 +45,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class USphereComponent> Sphere;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UNiagaraSystem> ImpactEffect;

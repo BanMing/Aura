@@ -57,7 +57,7 @@ private:
 
 	UAuraAbilitySystemComponent* GetASC();
 
-private:
+protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
 
@@ -81,6 +81,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UDamageTextComponent> DamageTextComponentClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<class UNiagaraSystem> ClickNiagaraSystem;
 
 private:
 	FHitResult CursorHit;

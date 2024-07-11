@@ -27,4 +27,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float ProjectileSpread = 90.f;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float HomingAccelerationMin = 1600.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float HomingAccelerationMax = 3200.f;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	bool bIsHomingProjectiles = true;
 };
