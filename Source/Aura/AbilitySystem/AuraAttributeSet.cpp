@@ -103,8 +103,6 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	// Do some check for attributes to make the value valid
 	if (Attribute == GetHealthAttribute())
 	{
-		float CurrentValue = Health.GetCurrentValue();
-		float BaseValue = Health.GetBaseValue();
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
 	if (Attribute == GetManaAttribute())
