@@ -25,6 +25,8 @@ public:
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
+	
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// Combat Interface
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& Montage) override;
@@ -38,7 +40,10 @@ public:
 	virtual int32 GetMinionCount_Implementation() const;
 	void IncrementMinionCount_Implementation(int Amount = 1);
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
-	virtual FOnDeath &GetOnDeathDelegate() override;
+	virtual FOnDeath& GetOnDeathDelegate() override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
+	virtual bool IsBeingShocked_Implementation() const override;
+	// Combat Interface
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
@@ -112,6 +117,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
 
 	bool bDead = false;
 

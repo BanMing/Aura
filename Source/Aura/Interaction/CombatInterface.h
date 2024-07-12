@@ -86,4 +86,10 @@ public:
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 
 	virtual FOnDeath& GetOnDeathDelegate() = 0;
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsBeingShocked(bool bInShock);
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsBeingShocked() const;
 };
