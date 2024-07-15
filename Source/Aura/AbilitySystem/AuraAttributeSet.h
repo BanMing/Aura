@@ -165,11 +165,11 @@ public:
 #pragma endregion
 
 #pragma region Meta Attributes
-	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_InComingDamge, Category = "Meta Attributes")
 	FGameplayAttributeData InComingDamge;
 	ATTRIBUTE_ACCESSORS(ThisClass, InComingDamge);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_InComingXP, Category = "Meta Attributes")
 	FGameplayAttributeData InComingXP;
 	ATTRIBUTE_ACCESSORS(ThisClass, InComingXP);
 #pragma endregion

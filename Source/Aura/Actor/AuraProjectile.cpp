@@ -48,6 +48,13 @@ void AAuraProjectile::Destroyed()
 	{
 		OnHit();
 	}
+	
+	if (LoopSoundComp)
+	{
+		LoopSoundComp->Stop();
+		LoopSoundComp->DestroyComponent();
+	}
+	
 	Super::Destroyed();
 }
 
@@ -59,6 +66,7 @@ void AAuraProjectile::OnHit()
 	if (LoopSoundComp)
 	{
 		LoopSoundComp->Stop();
+		LoopSoundComp->DestroyComponent();
 	}
 	bHit = true;
 }

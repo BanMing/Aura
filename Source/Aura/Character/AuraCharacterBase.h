@@ -43,6 +43,7 @@ public:
 	virtual FOnDeath& GetOnDeathDelegate() override;
 	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 	virtual bool IsBeingShocked_Implementation() const override;
+	virtual USkeletalMeshComponent* GetWeapon_Implementation() const override;
 	// Combat Interface
 
 	UFUNCTION(NetMulticast, Reliable)

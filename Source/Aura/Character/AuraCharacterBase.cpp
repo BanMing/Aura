@@ -147,6 +147,11 @@ bool AAuraCharacterBase::IsBeingShocked_Implementation() const
 	return bIsBeingShocked;
 }
 
+USkeletalMeshComponent* AAuraCharacterBase::GetWeapon_Implementation() const
+{
+	return Weapon;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& DeathImpulse)
 {
 	// Set character rogdoll
