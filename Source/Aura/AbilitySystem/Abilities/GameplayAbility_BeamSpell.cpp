@@ -30,8 +30,20 @@ void UGameplayAbility_BeamSpell::StoreOwnerVariables()
 void UGameplayAbility_BeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 {
 	check(OwerCharacter);
-	if(OwerCharacter->Implements<UCombatInterface>()){
-		//ICombatInterface::Execute_GetWeapon(OwerCharacter);
+	if (OwerCharacter->Implements<UCombatInterface>())
+	{
+		if (USkeletalMeshComponent* Weapon = ICombatInterface::Execute_GetWeapon(OwerCharacter))
+		{
+			const FVector SocketLocation = Weapon->GetSocketLocation("TipSocket");
+			TArray<AActor*> ActorsToIgnore;
+			FHitResult OutHit;
+			UKismetSystemLibrary::SphereTraceSingle(OwerCharacter, SocketLocation, BeamTargetLocation, 10, TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::None, OutHit, true);
+
+			if (OutHit.bBlockingHit)
+			{
+				MouseHitActor = OutHit.GetActor();
+				MouseHitLocation = OutHit.ImpactPoint;
+			}
+		}
 	}
-	//UKismetSystemLibrary::SphereTraceSingle(OwerCharacter,)
 }
