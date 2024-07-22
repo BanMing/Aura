@@ -28,7 +28,12 @@ protected:
 	const FTaggedMontage GetRandomTaggedMontage() const;
 
 	float GetDamageByDamageType(int32 Level, const FGameplayTag& DamageType) const;
+
+	UFUNCTION(BlueprintPure)
 	float GetDamage(int32 Level) const;
+	
+	UFUNCTION(BlueprintPure)
+	float GetDamageAtLevel() const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

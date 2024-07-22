@@ -75,3 +75,8 @@ float UGameplayAbility_DamageBase::GetDamage(int32 Level) const
 {
 	return Damage.GetValueAtLevel(Level);
 }
+
+float UGameplayAbility_DamageBase::GetDamageAtLevel() const
+{
+	return Damage.GetValueAtLevel(GetAbilityLevel());
+}

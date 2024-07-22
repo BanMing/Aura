@@ -104,6 +104,7 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 #pragma endregion
 
 	GameplayTags.Cooldown_Fire_FireBlot = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Fire.FireBlot"), FString("Test Des."));
+	GameplayTags.Cooldown_Lighting_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Cooldown.Lighting.Electrocute"), FString("Test Des."));
 
 	GameplayTags.CombatSocket_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.Weapon"), FString("Test Des."));
 	GameplayTags.CombatSocket_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.RightHand"), FString("Test Des."));
