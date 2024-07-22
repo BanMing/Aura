@@ -41,6 +41,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 
 private:
 	virtual void InitAbilityActorInfo() override;
@@ -66,9 +67,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	bool bHitReacting;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
-	float BaseWalkSpeed = 250.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	float Lifespan = 5.f;

@@ -260,6 +260,14 @@ void UAuraAttributeSet::HandleDebuff(const FEffectProperties& Props)
 	UTargetTagsGameplayEffectComponent& TargetTagsGEComp = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
 	FInheritedTagContainer TagContainerMods;
 	TagContainerMods.Added.AddTag(DebuffTag);
+	if (DebuffTag.MatchesTagExact(GameplayTags.Debuff_Stun))
+	{
+		TagContainerMods.Added.AddTag(GameplayTags.Player_Block_InputCursorTrace);
+		TagContainerMods.Added.AddTag(GameplayTags.Player_Block_InputHeld);
+		TagContainerMods.Added.AddTag(GameplayTags.Player_Block_InputPressed);
+		TagContainerMods.Added.AddTag(GameplayTags.Player_Block_InputReleased);
+	}
+
 	TargetTagsGEComp.SetAndApplyTargetTagChanges(TagContainerMods);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;

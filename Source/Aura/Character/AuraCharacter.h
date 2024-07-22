@@ -37,6 +37,8 @@ public:
 	/** Combat Interface*/
 	virtual int32 GetPlayerLevel_Implementation() const override;
 	/** end Combat Interface*/
+protected:
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
