@@ -73,6 +73,10 @@ public:
 	FGameplayTag Abilities_Fire_FireBlot;
 	FGameplayTag Abilities_Lighting_Electrocute;
 
+	FGameplayTag Abilities_Passive_HaloOfProtection;
+	FGameplayTag Abilities_Passive_LifeSiphon;
+	FGameplayTag Abilities_Passive_ManaSiphon;
+
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Eligible;
 	FGameplayTag Abilities_Status_Unlocked;

@@ -3,6 +3,7 @@
 #include "Aura/Character/AuraCharacter.h"
 
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h "
 #include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Player/AuraPlayerController.h"
@@ -160,10 +161,12 @@ void AAuraCharacter::OnRep_Stunned()
 		if (bIsStunned)
 		{
 			AbilitySystemComponent->AddLooseGameplayTags(BlockedTags);
+			//StunDebuffComponent->Activate();
 		}
 		else
 		{
 			AbilitySystemComponent->RemoveLooseGameplayTags(BlockedTags);
+			//StunDebuffComponent->Deactivate();
 		}
 	}
 }

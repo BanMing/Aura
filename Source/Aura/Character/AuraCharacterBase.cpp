@@ -173,6 +173,8 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	Dissolve();
 	bDead = true;
 	OnDeath.Broadcast(this);
+	BurnDebuffComponent->Deactivate();
+	StunDebuffComponent->Deactivate();
 }
 
 void AAuraCharacterBase::BeginPlay()

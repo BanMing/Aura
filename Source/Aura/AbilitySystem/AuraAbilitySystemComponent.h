@@ -12,6 +12,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, UAuraAbilitySystemComponent
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag&, const FGameplayTag&, const int32);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag&, const FGameplayTag&, const FGameplayTag&, const FGameplayTag&);
+DECLARE_MULTICAST_DELEGATE_OneParam(FDeactivatePassiveAbility, const FGameplayTag&);
 
 /**
  *
@@ -77,6 +78,7 @@ public:
 	FAbilitiesGiven OnAbilitiesGiven;
 	FAbilityStatusChanged OnAbilityStatusChanged;
 	FAbilityEquipped OnAbilityEquipped;
+	FDeactivatePassiveAbility OnDeactivatePassiveAbility;
 
 	bool bStartupAbilitiesGiven = false;
 };
