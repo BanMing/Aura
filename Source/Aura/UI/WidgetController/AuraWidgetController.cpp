@@ -47,7 +47,7 @@ void UAuraWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemCompo
 		[this](const FGameplayAbilitySpec& AbilitySpec)
 		{
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(UAuraAbilitySystemComponent::GetAbilityTagFromSpec(AbilitySpec));
-			Info.InputTag = UAuraAbilitySystemComponent::GetInputTagFromSpec(AbilitySpec);
+			Info.InputTag = UAuraAbilitySystemComponent::GetSlotFromSpec(AbilitySpec);
 			Info.CooldownTag = UAuraAbilitySystemComponent::GetCooldownTagFromSpec(AbilitySpec);
 			Info.StatusTag = UAuraAbilitySystemComponent::GetStatusFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
