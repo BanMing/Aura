@@ -140,6 +140,21 @@ int32 AAuraCharacter::GetSpellPoints_Implementation() const
 	return AuraPlayerState->GetPlayerSpellPoints();
 }
 
+void AAuraCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial)
+{
+	if (AAuraPlayerController* PlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		PlayerController->ShowMagicCircle(DecalMaterial);
+	}
+}
+void AAuraCharacter::HideMagicCircle_Implementation()
+{
+	if (AAuraPlayerController* PlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		PlayerController->HideMagicCircle();
+	}
+}
+
 int32 AAuraCharacter::GetPlayerLevel_Implementation() const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
@@ -161,12 +176,12 @@ void AAuraCharacter::OnRep_Stunned()
 		if (bIsStunned)
 		{
 			AbilitySystemComponent->AddLooseGameplayTags(BlockedTags);
-			//StunDebuffComponent->Activate();
+			// StunDebuffComponent->Activate();
 		}
 		else
 		{
 			AbilitySystemComponent->RemoveLooseGameplayTags(BlockedTags);
-			//StunDebuffComponent->Deactivate();
+			// StunDebuffComponent->Deactivate();
 		}
 	}
 }

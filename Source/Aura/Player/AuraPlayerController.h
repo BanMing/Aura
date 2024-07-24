@@ -14,6 +14,7 @@ class UInputAction;
 struct FInputActionValue;
 class IEnemyInterface;
 class UAuraAbilitySystemComponent;
+class AMagicCircle;
 /**
  *
  */
@@ -29,6 +30,12 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(float DamgaAmount, ACharacter* TargetCharacter, bool bIsBlockedHit, bool bIsCriticalHit);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
+
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
 
 protected:
 	virtual void BeginPlay() override;
@@ -54,6 +61,7 @@ private:
 	void AutoRun();
 	void MoveClickedMove();
 	void MouseHeldMove();
+	void UpdateMagicCircleLocation();
 
 	UAuraAbilitySystemComponent* GetASC();
 
@@ -84,6 +92,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<class UNiagaraSystem> ClickNiagaraSystem;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
 
 private:
 	FHitResult CursorHit;
