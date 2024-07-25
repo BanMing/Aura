@@ -170,6 +170,11 @@ USkeletalMeshComponent* AAuraCharacterBase::GetWeapon_Implementation() const
 	return Weapon;
 }
 
+FOnDamageSignature& AAuraCharacterBase::GetOnDamageDelegate()
+{
+	return OnDamageDelegate;
+}
+
 void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& DeathImpulse)
 {
 	// Set character rogdoll
@@ -191,6 +196,14 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	OnDeath.Broadcast(this);
 	BurnDebuffComponent->Deactivate();
 	StunDebuffComponent->Deactivate();
+}
+
+float AAuraCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	OnDamageDelegate.Broadcast(DamageTaken);
+
+	return DamageTaken;
 }
 
 void AAuraCharacterBase::BeginPlay()

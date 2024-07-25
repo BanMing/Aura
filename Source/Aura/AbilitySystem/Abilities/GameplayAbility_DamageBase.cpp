@@ -21,7 +21,7 @@ void UGameplayAbility_DamageBase::CauseDamage(AActor* TargetActor)
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
 }
 
-FDamageEffectParams UGameplayAbility_DamageBase::MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor) const
+FDamageEffectParams UGameplayAbility_DamageBase::MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor, const FVector InRadialDamageOrigin) const
 {
 	FDamageEffectParams Params;
 	Params.WorldCOntextObject = GetAvatarActorFromActorInfo();
@@ -44,7 +44,7 @@ FDamageEffectParams UGameplayAbility_DamageBase::MakeDamageEffectParamsFromClass
 		Params.bIsRadialDamage = bIsRadialDamage;
 		Params.RadialDamageInnerRadius = RadialDamageInnerRadius;
 		Params.RadialDamageOuterRadius = RadialDamageOuterRadius;
-		Params.RadialDamageOrigin = RadialDamageOrigin;
+		Params.RadialDamageOrigin = InRadialDamageOrigin;
 	}
 
 	if (IsValid(TargetActor) && FMath::RandRange(1, 100) < KnockbackChance)

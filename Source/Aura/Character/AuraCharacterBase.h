@@ -45,11 +45,14 @@ public:
 	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 	virtual bool IsBeingShocked_Implementation() const override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() const override;
+	virtual FOnDamageSignature& GetOnDamageDelegate() override;
 	// Combat Interface
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -75,6 +78,7 @@ protected:
 protected:
 	FOnASCRegistered OnASCRegistered;
 	FOnDeath OnDeath;
+	FOnDamageSignature OnDamageDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
@@ -136,7 +140,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPassiveNiagaraComponent> ManaSiphonNiagaraComponent;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> EffectAttachComponent;
 
