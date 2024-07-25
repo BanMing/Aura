@@ -35,6 +35,7 @@ void AAuraPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 		{
 			MagicCircle->MagicCirleDecal->SetMaterial(0, DecalMaterial);
 		}
+		bShowMouseCursor = false;
 	}
 }
 
@@ -43,6 +44,7 @@ void AAuraPlayerController::HideMagicCircle()
 	if (IsValid(MagicCircle))
 	{
 		MagicCircle->Destroy();
+		bShowMouseCursor = true;
 	}
 }
 

@@ -71,12 +71,24 @@ struct FDamageEffectParams
 
 	UPROPERTY(BlueprintReadWrite)
 	float KnockbackMagnitude = 1.f;
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	float KnockbackChance = 0.f;
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	FVector KnockbackImpulse = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsRadialDamage = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageInnerRadius = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageOuterRadius = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)
@@ -120,6 +132,10 @@ public:
 	EFFECT_CONTEXT_ACCESSORS(float, DebuffFrequency)
 	EFFECT_CONTEXT_ACCESSORS(FVector, DeathImpulse)
 	EFFECT_CONTEXT_ACCESSORS(FVector, KnockbackImpulse)
+	EFFECT_CONTEXT_ACCESSORS(bool, bIsRadialDamage)
+	EFFECT_CONTEXT_ACCESSORS(float, RadialDamageInnerRadius)
+	EFFECT_CONTEXT_ACCESSORS(float, RadialDamageOuterRadius)
+	EFFECT_CONTEXT_ACCESSORS(FVector, RadialDamageOrigin)
 
 	FORCEINLINE TSharedPtr<FGameplayTag> GetDamageType() const
 	{
@@ -154,6 +170,18 @@ protected:
 
 	UPROPERTY()
 	FVector KnockbackImpulse = FVector::ZeroVector;
+
+	UPROPERTY()
+	bool bIsRadialDamage = false;
+
+	UPROPERTY()
+	float RadialDamageInnerRadius = 0.f;
+
+	UPROPERTY()
+	float RadialDamageOuterRadius = 0.f;
+
+	UPROPERTY()
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 template <>

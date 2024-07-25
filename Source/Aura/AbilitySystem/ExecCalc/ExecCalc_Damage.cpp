@@ -118,6 +118,15 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 		DamageTypeValue *= (kMaxAttributeAmount - Resistance) / kMaxAttributeAmount;
 
+		if (UAuraAbilitySystemLibrary::IsRadialDamage(GameplayEffectContextHandle))
+		{
+			// 1. override TakeDamage in AuraCharacterBase
+			// 2. create delegate OnDamageDelegate, broadcast damage received in TakeDamage
+			// 3. Bind lambda to OnDamageDelegate on the Victime here
+			// 4. Call UGameplayStatics::ApplyRadialDamageWithFalloff to cause damage (this will result in TakeDamage being called 
+			// on the Victim,which will then broadcast OnDamageDelegate)
+		}
+
 		Damage += DamageTypeValue;
 	}
 

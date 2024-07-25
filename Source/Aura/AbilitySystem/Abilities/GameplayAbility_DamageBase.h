@@ -19,7 +19,7 @@ class AURA_API UGameplayAbility_DamageBase : public UAuraGameplayAbility
 public:
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
-	
+
 	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
@@ -31,7 +31,7 @@ protected:
 
 	UFUNCTION(BlueprintPure)
 	float GetDamage(int32 Level) const;
-	
+
 	UFUNCTION(BlueprintPure)
 	float GetDamageAtLevel() const;
 
@@ -68,4 +68,16 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	float KnockbackChance = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	bool bIsRadialDamage = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	float RadialDamageInnerRadius = 0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	float RadialDamageOuterRadius = 0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };

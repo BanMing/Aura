@@ -38,7 +38,14 @@ FDamageEffectParams UGameplayAbility_DamageBase::MakeDamageEffectParamsFromClass
 	Params.DebuffFrequency = DebuffFrequency;
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 	Params.KnockbackMagnitude = KnockbackMagnitude;
-	Params.KnockbackChance = KnockbackChance;
+
+	if (bIsRadialDamage)
+	{
+		Params.bIsRadialDamage = bIsRadialDamage;
+		Params.RadialDamageInnerRadius = RadialDamageInnerRadius;
+		Params.RadialDamageOuterRadius = RadialDamageOuterRadius;
+		Params.RadialDamageOrigin = RadialDamageOrigin;
+	}
 
 	if (IsValid(TargetActor) && FMath::RandRange(1, 100) < KnockbackChance)
 	{
