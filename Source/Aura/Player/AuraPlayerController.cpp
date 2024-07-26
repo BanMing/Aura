@@ -4,6 +4,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Actor/MagicCircle.h"
+#include "Aura.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/AuraGameplayTags.h"
 #include "Aura/Input/AuraInputComponent.h"
@@ -123,8 +124,8 @@ void AAuraPlayerController::CursorTrace()
 		LastActor = nullptr;
 		return;
 	}
-
-	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	const ECollisionChannel TraceChannel = IsValid(MagicCircle) ? ECC_ExcludePlayer : ECC_Visibility;
+	GetHitResultUnderCursor(TraceChannel, false, CursorHit);
 	if (!CursorHit.bBlockingHit)
 	{
 		return;

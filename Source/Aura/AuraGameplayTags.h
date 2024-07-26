@@ -71,6 +71,7 @@ public:
 	FGameplayTag Abilities_HitReact;
 
 	FGameplayTag Abilities_Fire_FireBlot;
+	FGameplayTag Abilities_Fire_FireBlast;
 	FGameplayTag Abilities_Lighting_Electrocute;
 	FGameplayTag Abilities_Arcane_ArcaneShards;
 
@@ -88,7 +89,9 @@ public:
 	FGameplayTag Abilities_Type_None;
 
 	FGameplayTag Cooldown_Fire_FireBlot;
+	FGameplayTag Cooldown_Fire_FireBlast;
 	FGameplayTag Cooldown_Lighting_Electrocute;
+	FGameplayTag Cooldown_Arcane_Shards;
 
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;

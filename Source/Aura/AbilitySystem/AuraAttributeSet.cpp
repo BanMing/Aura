@@ -224,7 +224,7 @@ void UAuraAttributeSet::HandleInComingDamage(const FEffectProperties& Props)
 				GameplayTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(GameplayTagContainer);
 			}
-
+			//FMath::RandRange(1, 100) < UAuraAbilitySystemLibrary::GetKnockbackImpulse
 			const FVector& KnockbackForce = UAuraAbilitySystemLibrary::GetKnockbackImpulse(Props.EffectContextHandle);
 			if (!KnockbackForce.IsNearlyZero(1.f))
 			{
