@@ -124,6 +124,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayEffects")
 	static void SetRadialDamageOrigin(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, const FVector& RadialDamageOrigin);
 
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayEffects")
+	static void SetRadialDamageEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, const bool IsRadialDamage, float InnerRadius, float OuterRadius, FVector DamageOrigin);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayEffects")
+	static void SetKnockbackDirectionEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, FVector KnockbackDirection, float Magnitude = 0.f);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayEffects")
+	static void SetDeathImpulseDirectionEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, FVector DeathImpulseDirection, float Magnitude = 0.f);
+
+	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayEffects")
+	static void SetTargetASCEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, AActor* Target);
+
 	UFUNCTION(BlueprintCallable, Category = "Aura Ability System Library|GameplayMechanics")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
 

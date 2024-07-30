@@ -24,7 +24,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;
-	
+
 	UPROPERTY()
 	TObjectPtr<USceneComponent> HomingTargetComponent;
 
@@ -32,13 +32,18 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
 
+	UFUNCTION(BlueprintCallable)
 	void OnHit();
 
 	UFUNCTION()
-	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	bool IsValidOverlap(AActor* OtherActor);
+
+protected:
+	bool bHit = false;
 
 private:
-	bool bHit = false;
 
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpan = 50.f;
