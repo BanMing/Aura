@@ -112,6 +112,8 @@ public:
 	FGameplayTag Player_Block_InputReleased;
 	FGameplayTag Player_Block_InputCursorTrace;
 
+	FGameplayTag GameplayCue_FireBlast;
+
 private:
 	static FAuraGameplayTags GameplayTags;
 };
