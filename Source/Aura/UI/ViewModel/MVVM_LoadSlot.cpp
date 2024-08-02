@@ -37,3 +37,13 @@ void UMVVM_LoadSlot::SetPlayerName(FString InPlayerName)
 {
 	UE_MVVM_SET_PROPERTY_VALUE(PlayerName, InPlayerName);
 }
+
+FString UMVVM_LoadSlot::GetMapName() const
+{
+	return MapName;
+}
+
+void UMVVM_LoadSlot::SetMapName(FString InMapName)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(MapName, InMapName);
+}

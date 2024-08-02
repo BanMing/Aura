@@ -31,6 +31,9 @@ public:
 	FString GetPlayerName() const;
 	void SetPlayerName(FString InPlayerName);
 
+	FString GetMapName() const;
+	void SetMapName(FString InMapName);
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FSetWidgetSwitcherIndex OnSetWidgetSwitcherIndex;
@@ -49,4 +52,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	FString PlayerName = FString("Default Name");
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	FString MapName = FString();
 };

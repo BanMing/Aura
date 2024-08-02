@@ -34,4 +34,7 @@ public:
 
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
+	
+	UPROPERTY()
+	FString MapName = FString();
 };
